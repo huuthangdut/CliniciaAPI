@@ -29,7 +29,7 @@ namespace Clinicia.WebApi
             {
                 mc.AddProfile(new EntityToSchemaMappingProfile());
                 mc.AddProfile(new SchemaToEntityMappingProfile());
-                mc.AddProfile(new EntityToModelMappingProfile());
+                mc.AddProfile(new EntityToResultMappingProfile());
                 mc.AddProfile(new ModelToEntityMappingProfile());
             }).CreateMapper());
         }

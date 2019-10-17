@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Clinicia.Infrastructure\Clinicia.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Results\" />
-  </ItemGroup>
-
 </Project>
