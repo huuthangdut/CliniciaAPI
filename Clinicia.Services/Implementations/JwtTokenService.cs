@@ -1,8 +1,8 @@
-﻿using Clinicia.Abstractions.Services;
-using Clinicia.Common.Enums;
+﻿using Clinicia.Common.Enums;
 using Clinicia.Common.Helpers;
 using Clinicia.Common.Runtime.Security;
 using Clinicia.Entities.Token;
+using Clinicia.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using System;
 using System.IdentityModel.Tokens.Jwt;

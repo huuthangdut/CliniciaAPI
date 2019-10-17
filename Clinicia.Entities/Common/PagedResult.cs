@@ -16,8 +16,6 @@
 
         public bool HasNextPage => PageIndex + 1 < TotalPages;
 
-        public object ExtraData { get; set; }
-
         public PagedResult() => Items = new T[0];
     }
 

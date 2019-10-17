@@ -34,8 +34,6 @@ namespace Clinicia.Repositories
 
         public DbSet<DbLocation> Locations { get; set; }
 
-        public DbSet<DbSpecialty> Specialities { get; set; }
-
         public DbSet<DbNoAttendance> NoAttendances { get; set; }
 
         public DbSet<DbPatient> Patients { get; set; }

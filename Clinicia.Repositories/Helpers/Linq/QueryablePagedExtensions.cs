@@ -10,48 +10,26 @@ namespace Services.Helpers.PagedResult
 {
     public static class QueryablePagedAndSortedExtensions
     {
-        public static async Task<PagedResult<T>> GetPagedResultAsync<T>(
+        public static async Task<PagedResult<TResult>> GetPagedResultAsync<T, TResult>(
             this IQueryable<T> source,
+            Func<IQueryable<T>, IOrderedQueryable<T>> setOrderFunction,
             int pageIndex,
             int pageSize,
-            object extraData = null)
+            Func<T, TResult> convert)
         {
             if (pageSize == 0)
             {
-                return EmptyPagedResult<T>.Instance;
+                return EmptyPagedResult<TResult>.Instance;
             }
 
             var count = await source.CountAsync().ConfigureAwait(false);
 
-            var items = await source
+            var items = await setOrderFunction(source)
                 .PageBy(pageIndex * pageSize, pageSize)
                 .MakeQueryToDatabaseAsync()
                 .ConfigureAwait(false);
 
-            return new PagedResult<T>
-            {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                TotalCount = count,
-                Items = items.ToArray(),
-                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
-                ExtraData = extraData,
-            };
-        }
-
-        public static async Task<PagedResult<TEntityDto>> GetPagedResultAsync<TProjection, TEntityDto>(
-            this IQueryable<TProjection> source,
-            int pageIndex,
-            int pageSize,
-            Func<TProjection, TEntityDto> convert)
-        {
-            var count = await source.CountAsync().ConfigureAwait(false);
-
-            var items = source
-                .PageBy(pageIndex * pageSize, pageSize)
-                .MakeQueryToDatabase();
-
-            return new PagedResult<TEntityDto>
+            return new PagedResult<TResult>
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
