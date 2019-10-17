@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clinicia.Common\Clinicia.Common.csproj" />
+    <ProjectReference Include="..\Clinicia.Entities\Clinicia.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
