@@ -12,5 +12,7 @@ namespace Clinicia.Repositories.Schemas
 
         [ForeignKey("LocationId")]
         public virtual DbLocation Location { get; set; }
+
+        public virtual ICollection<DbReview> Reviews { get; set; }
     }
 }

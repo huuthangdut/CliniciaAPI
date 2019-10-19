@@ -1,25 +1,22 @@
-﻿using Clinicia.Repositories.Schemas.Interfaces;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Clinicia.Repositories.Schemas.Interfaces;
 
 namespace Clinicia.Repositories.Schemas
 {
-    [Table("Holidays")]
-    public class DbHoliday : IFullEntity
+    [Table("Reviews")]
+    public class DbReview : IFullEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public DateTime FromDate { get; set; }
+        public int Rating { get; set; }
 
-        public DateTime ToDate { get; set; }
+        public string Comment { get; set; }
 
-        [StringLength(256)]
-        public string Reason { get; set; }
+        public string DoctorId { get; set; }
 
-        public int ClinicId { get; set; }
+        public string PatientId { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
@@ -35,7 +32,10 @@ namespace Clinicia.Repositories.Schemas
 
         public bool IsDelete { get; set; }
 
-        [ForeignKey("ClinicId")]
-        public virtual DbClinic Clinic { get; set; }
+        [ForeignKey("DoctorId")]
+        public virtual DbDoctor Doctor { get; set; }
+
+        [ForeignKey("PatientId")]
+        public virtual DbPatient Patient { get; set; }
     }
 }

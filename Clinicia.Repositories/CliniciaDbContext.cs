@@ -26,11 +26,9 @@ namespace Clinicia.Repositories
 
         public DbSet<DbAppointment> Appointments { get; set; }
 
-        public DbSet<DbClinic> Clinics { get; set; }
-
         public DbSet<DbDoctor> Doctors { get; set; }
 
-        public DbSet<DbHoliday> Holidays { get; set; }
+        public DbSet<DbReview> Reviews { get; set; }
 
         public DbSet<DbLocation> Locations { get; set; }
 
