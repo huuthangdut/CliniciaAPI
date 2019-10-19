@@ -1,6 +1,6 @@
 ﻿namespace Clinicia.Services.Interfaces
 {
-    public interface DoctorService
+    public interface IDoctorService
     {
 
     }
