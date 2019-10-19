@@ -1,23 +1,22 @@
 ﻿using AutoMapper;
-using Clinicia.Entities.Common;
-using Clinicia.Entities.Specialty;
 using Clinicia.Repositories.Helpers.Linq;
 using Clinicia.Repositories.Interfaces;
 using Clinicia.Repositories.Schemas;
 using Microsoft.EntityFrameworkCore;
-using Services.Helpers.PagedResult;
 using System.Linq;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Repositories.Implementations
 {
     public class SpecialtyRepository : GenericRepository<DbSpecialty>, ISpecialtyRepository
     {
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public SpecialtyRepository(CliniciaDbContext context, IMapper mapper) : base(context)
         {
-            this.mapper = mapper;
+            _mapper = mapper;
         }
 
         public async Task<PagedResult<Specialty>> GetSpecialtiesAsync(int page, int pageSize, bool? isActive)

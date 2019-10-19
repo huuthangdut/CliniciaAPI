@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
-using Clinicia.Entities.Common;
 using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Common;
 
 namespace Clinicia.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
     public class SpecialtiesController : BaseApiController
     {
-        private readonly ISpecialtyService specialtyService;
+        private readonly ISpecialtyService _specialtyService;
 
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public SpecialtiesController(ISpecialtyService specialtyService, IMapper mapper)
         {
-            this.specialtyService = specialtyService;
-            this.mapper = mapper;
+            _specialtyService = specialtyService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,9 +26,9 @@ namespace Clinicia.WebApi.Controllers.V1
             [FromQuery]int page, 
             [FromQuery]int pageSize)
         {
-            var result = await specialtyService.GetSpecialtiesAsync(page, pageSize);
+            var result = await _specialtyService.GetSpecialtiesAsync(page, pageSize);
 
-            return Success(mapper.Map<PagedResult<SpecialtyResult>>(result));
+            return Success(_mapper.Map<PagedResult<SpecialtyResult>>(result));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Clinicia.Common;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Runtime.Security;
-using Clinicia.Entities.Login;
 using Clinicia.Repositories.Schemas;
 using Clinicia.Repositories.UnitOfWork;
 using Clinicia.Services.Interfaces;
@@ -12,6 +11,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Implementations
 {

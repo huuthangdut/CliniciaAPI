@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Clinicia.Entities\Clinicia.Entities.csproj" />
+    <ProjectReference Include="..\Clinicia.Entities\Clinicia.Dtos.csproj" />
     <ProjectReference Include="..\Clinicia.Repositories\Clinicia.Repositories.csproj" />
     <ProjectReference Include="..\Clinicia.Services\Clinicia.Services.csproj" />
   </ItemGroup>

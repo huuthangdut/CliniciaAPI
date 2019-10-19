@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Clinicia.Common.Enums;
 
-namespace Clinicia.Entities.Login
+namespace Clinicia.Dtos.Output
 {
     public class LoginResult
     {

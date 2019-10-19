@@ -1,7 +1,7 @@
-﻿using Clinicia.Entities.Common;
-using Clinicia.Entities.Specialty;
-using Clinicia.Repositories.Schemas;
+﻿using Clinicia.Repositories.Schemas;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Repositories.Interfaces
 {

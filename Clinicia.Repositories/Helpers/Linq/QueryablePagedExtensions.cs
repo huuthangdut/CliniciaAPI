@@ -1,12 +1,11 @@
-﻿using Clinicia.Common.Extensions;
-using Clinicia.Entities.Common;
-using Clinicia.Repositories.Helpers.Linq;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Clinicia.Common.Extensions;
+using Clinicia.Dtos.Common;
+using Microsoft.EntityFrameworkCore;
 
-namespace Services.Helpers.PagedResult
+namespace Clinicia.Repositories.Helpers.Linq
 {
     public static class QueryablePagedAndSortedExtensions
     {

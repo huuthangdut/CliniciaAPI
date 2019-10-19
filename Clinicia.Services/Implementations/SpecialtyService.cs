@@ -1,23 +1,23 @@
-﻿using Clinicia.Entities.Common;
-using Clinicia.Entities.Specialty;
-using Clinicia.Repositories.UnitOfWork;
+﻿using Clinicia.Repositories.UnitOfWork;
 using Clinicia.Services.Interfaces;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Implementations
 {
     public class SpecialtyService : ISpecialtyService
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public SpecialtyService(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<PagedResult<Specialty>> GetSpecialtiesAsync(int page, int pageSize)
         {
-            return await unitOfWork.SpecialtyRepository.GetSpecialtiesAsync(page, pageSize, isActive: true);
+            return await _unitOfWork.SpecialtyRepository.GetSpecialtiesAsync(page, pageSize, isActive: true);
         }
     }
 }

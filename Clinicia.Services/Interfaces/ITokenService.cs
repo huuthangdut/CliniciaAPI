@@ -1,7 +1,7 @@
 ﻿using Clinicia.Common.Enums;
-using Clinicia.Entities.Token;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Interfaces
 {

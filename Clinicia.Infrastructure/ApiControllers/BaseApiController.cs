@@ -1,7 +1,7 @@
 ﻿using System.Net.Mime;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
-using Clinicia.Entities.Common;
+using Clinicia.Dtos.Common;
 using Clinicia.Infrastructure.ApiResults;
 using Microsoft.AspNetCore.Mvc;
 

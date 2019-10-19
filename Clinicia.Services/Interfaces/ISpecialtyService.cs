@@ -1,6 +1,6 @@
-﻿using Clinicia.Entities.Common;
-using Clinicia.Entities.Specialty;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Interfaces
 {

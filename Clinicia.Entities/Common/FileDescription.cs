@@ -1,4 +1,4 @@
-﻿namespace Clinicia.Entities.Common
+﻿namespace Clinicia.Dtos.Common
 {
     public class FileDescription
     {

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Clinicia.Entities.Register;
+using Clinicia.Dtos.Input;
 using Clinicia.WebApi.Models;
 
 namespace Clinicia.WebApi.Mappings
 {
-    public class ModelToEntityMappingProfile : Profile
+    public class ModelToDtoMappingProfile : Profile
     {
-        public ModelToEntityMappingProfile()
+        public ModelToDtoMappingProfile()
         {
             CreateMap<RegisterModel, AccountRegister>();
         }

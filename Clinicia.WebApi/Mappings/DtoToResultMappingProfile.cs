@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Clinicia.Entities.Common;
-using Clinicia.Entities.Specialty;
+using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 using Clinicia.WebApi.Results;
 
 namespace Clinicia.WebApi.Mappings
 {
-    public class EntityToResultMappingProfile : Profile
+    public class DtoToResultMappingProfile : Profile
     {
-        public EntityToResultMappingProfile()
+        public DtoToResultMappingProfile()
         {
             CreateMap<Specialty, SpecialtyResult>();
             CreateMap<PagedResult<Specialty>, PagedResult<SpecialtyResult>>();

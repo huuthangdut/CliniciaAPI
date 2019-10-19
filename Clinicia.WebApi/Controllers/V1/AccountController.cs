@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Clinicia.Common.Enums;
-using Clinicia.Entities.Register;
 using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Clinicia.Dtos.Input;
 
 namespace Clinicia.WebApi.Controllers.V1
 {

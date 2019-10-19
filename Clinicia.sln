@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinicia.Repositories", "Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinicia.Infrastructure", "Clinicia.Infrastructure\Clinicia.Infrastructure.csproj", "{D4B81FE6-9003-4643-8715-17A91F5DBB1E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinicia.Entities", "Clinicia.Entities\Clinicia.Entities.csproj", "{7C0AA450-BA0A-46B3-8D39-57CC97CD4B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinicia.Dtos", "Clinicia.Entities\Clinicia.Dtos.csproj", "{7C0AA450-BA0A-46B3-8D39-57CC97CD4B81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinicia.WebApi", "Clinicia.WebApi\Clinicia.WebApi.csproj", "{0ACF1A0E-6F77-4973-A7F9-CC7F74DC5E0D}"
 EndProject

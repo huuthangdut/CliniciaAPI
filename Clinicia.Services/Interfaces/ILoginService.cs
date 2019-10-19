@@ -1,5 +1,5 @@
-﻿using Clinicia.Entities.Login;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Interfaces
 {

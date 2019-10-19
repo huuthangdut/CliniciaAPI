@@ -1,4 +1,4 @@
-﻿namespace Clinicia.Entities.Specialty
+﻿namespace Clinicia.Dtos.Output
 {
     public class Specialty
     {

@@ -1,4 +1,4 @@
-﻿namespace Clinicia.Entities.Register
+﻿namespace Clinicia.Dtos.Input
 {
     public class AccountRegister
     {

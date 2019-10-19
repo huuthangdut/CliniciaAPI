@@ -1,4 +1,4 @@
-﻿namespace Clinicia.Entities.Token
+﻿namespace Clinicia.Dtos.Output
 {
     public class JwtTokenResult
     {
