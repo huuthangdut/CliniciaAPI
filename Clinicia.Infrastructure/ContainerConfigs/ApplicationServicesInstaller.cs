@@ -21,6 +21,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<ITokenService, JwtTokenService>();
             services.AddTransient<IRegisterService, RegisterService>();
             services.AddTransient<ISpecialtyService, SpecialtyService>();
+            services.AddTransient<ILocationService, LocationService>();
         }
     }
 }
