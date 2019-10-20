@@ -17,9 +17,9 @@ namespace Clinicia.Repositories
 {
     public class CliniciaDbContext
         : IdentityDbContext<
-            DbUser, DbRole, string,
-            IdentityUserClaim<string>, DbUserRole, IdentityUserLogin<string>,
-            IdentityRoleClaim<string>, IdentityUserToken<string>>
+            DbUser, DbRole, Guid,
+            IdentityUserClaim<Guid>, DbUserRole, IdentityUserLogin<Guid>,
+            IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         private static readonly MethodInfo ConfigureGlobalFiltersMethodInfo = typeof(CliniciaDbContext).GetMethod(nameof(ConfigureGlobalFilters), BindingFlags.Instance | BindingFlags.NonPublic);
         private readonly IAuditHelper _auditHelper;
@@ -90,22 +90,22 @@ namespace Clinicia.Repositories
                 b.ToTable("UserRoles");
             });
 
-            modelBuilder.Entity<IdentityUserClaim<string>>(b =>
+            modelBuilder.Entity<IdentityUserClaim<Guid>>(b =>
             {
                 b.ToTable("UserClaims");
             });
 
-            modelBuilder.Entity<IdentityUserLogin<string>>(b =>
+            modelBuilder.Entity<IdentityUserLogin<Guid>>(b =>
             {
                 b.ToTable("UserLogins");
             });
 
-            modelBuilder.Entity<IdentityUserToken<string>>(b =>
+            modelBuilder.Entity<IdentityUserToken<Guid>>(b =>
             {
                 b.ToTable("UserTokens");
             });
 
-            modelBuilder.Entity<IdentityRoleClaim<string>>(b =>
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>(b =>
             {
                 b.ToTable("RoleClaims");
             });

@@ -1,9 +1,20 @@
 ﻿using Clinicia.Dtos.Common;
+using Clinicia.Dtos.Output;
 
-namespace Clinicia.Dtos.Output
+namespace Clinicia.WebApi.Results
 {
-    public class Doctor : User
+    public class DoctorResult
     {
+        public string Id { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string ImageProfile { get; set; }
+
+        public bool? Gender { get; set; }
+
         public string MedicalSchool { get; set; }
 
         public string Awards { get; set; }
@@ -14,7 +25,7 @@ namespace Clinicia.Dtos.Output
 
         public double? Rating { get; set; }
 
-        public int? RatingCount { get; set; }
+        public double? RatingCount { get; set; }
 
         public double DistanceFromPatient { get; set; }
 

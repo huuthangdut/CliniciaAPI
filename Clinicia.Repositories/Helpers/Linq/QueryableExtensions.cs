@@ -33,6 +33,16 @@ namespace Clinicia.Repositories.Helpers.Linq
                 : query;
         }
 
+        /// <summary>
+        /// Order by ascending if ascending is true, else order by descending
+        /// </summary>
+        public static IQueryable<TEntity> OrderByElseDescending<TEntity, T>(this IQueryable<TEntity> query, bool ascending, Expression<Func<TEntity, T>> keySelector)
+        {
+            return ascending
+                ? query.OrderBy(keySelector)
+                : query.OrderByDescending(keySelector);
+        }
+
         public static IQueryable<TEntity> OrderByDescendingIf<TEntity, T>(this IQueryable<TEntity> query, bool condition, Expression<Func<TEntity, T>> keySelector)
         {
             return condition

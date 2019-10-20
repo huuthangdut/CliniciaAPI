@@ -19,7 +19,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbAppointment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedDate");
@@ -32,7 +32,7 @@ namespace Clinicia.Repositories.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("DoctorId");
+                    b.Property<Guid>("DoctorId");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
@@ -41,7 +41,7 @@ namespace Clinicia.Repositories.Migrations
 
                     b.Property<bool>("IsDelete");
 
-                    b.Property<string>("PatientId");
+                    b.Property<Guid>("PatientId");
 
                     b.Property<string>("PrivateResult");
 
@@ -70,7 +70,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbLocation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Address");
@@ -92,7 +92,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbNoAttendance", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedDate");
@@ -100,7 +100,7 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50);
 
-                    b.Property<string>("DoctorId");
+                    b.Property<Guid>("DoctorId");
 
                     b.Property<DateTime>("FromDate");
 
@@ -127,7 +127,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbReview", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Comment");
@@ -137,13 +137,13 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50);
 
-                    b.Property<string>("DoctorId");
+                    b.Property<Guid>("DoctorId");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsDelete");
 
-                    b.Property<string>("PatientId");
+                    b.Property<Guid>("PatientId");
 
                     b.Property<int>("Rating");
 
@@ -163,7 +163,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbRole", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
@@ -186,7 +186,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbSpecialty", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedDate");
@@ -215,7 +215,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbUser", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
@@ -253,6 +253,8 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("LastName")
                         .HasMaxLength(256);
 
+                    b.Property<Guid?>("LocationId");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -283,6 +285,8 @@ namespace Clinicia.Repositories.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -297,9 +301,9 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbUserRole", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<Guid>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -310,7 +314,7 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbWorkingSchedule", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("CreatedDate");
@@ -318,7 +322,7 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50);
 
-                    b.Property<string>("DoctorId");
+                    b.Property<Guid>("DoctorId");
 
                     b.Property<DateTime>("FromDate");
 
@@ -341,7 +345,7 @@ namespace Clinicia.Repositories.Migrations
                     b.ToTable("WorkingSchedules");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -350,8 +354,7 @@ namespace Clinicia.Repositories.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+                    b.Property<Guid>("RoleId");
 
                     b.HasKey("Id");
 
@@ -360,7 +363,7 @@ namespace Clinicia.Repositories.Migrations
                     b.ToTable("RoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -369,8 +372,7 @@ namespace Clinicia.Repositories.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
@@ -379,7 +381,7 @@ namespace Clinicia.Repositories.Migrations
                     b.ToTable("UserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -387,8 +389,7 @@ namespace Clinicia.Repositories.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -397,9 +398,9 @@ namespace Clinicia.Repositories.Migrations
                     b.ToTable("UserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.Property<string>("LoginProvider");
 
@@ -421,16 +422,14 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("Clinic")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("LocationId");
-
                     b.Property<string>("MedicalSchool")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("SpecialtyId");
+                    b.Property<decimal?>("Price");
+
+                    b.Property<Guid?>("SpecialtyId");
 
                     b.Property<int?>("YearExperience");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("SpecialtyId");
 
@@ -443,11 +442,6 @@ namespace Clinicia.Repositories.Migrations
                 {
                     b.HasBaseType("Clinicia.Repositories.Schemas.DbUser");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnName("DbPatient_LocationId");
-
-                    b.HasIndex("LocationId");
-
                     b.ToTable("Patients");
 
                     b.HasDiscriminator().HasValue("DbPatient");
@@ -457,29 +451,41 @@ namespace Clinicia.Repositories.Migrations
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbDoctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Clinicia.Repositories.Schemas.DbPatient", "Patient")
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbNoAttendance", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbDoctor", "Doctor")
                         .WithMany("NoAttendances")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbReview", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbDoctor", "Doctor")
                         .WithMany("Reviews")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Clinicia.Repositories.Schemas.DbPatient", "Patient")
                         .WithMany("Reviews")
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Clinicia.Repositories.Schemas.DbUser", b =>
+                {
+                    b.HasOne("Clinicia.Repositories.Schemas.DbLocation", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbUserRole", b =>
@@ -499,10 +505,11 @@ namespace Clinicia.Repositories.Migrations
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbDoctor", "Doctor")
                         .WithMany("WorkingSchedules")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbRole")
                         .WithMany()
@@ -510,7 +517,7 @@ namespace Clinicia.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbUser")
                         .WithMany()
@@ -518,7 +525,7 @@ namespace Clinicia.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbUser")
                         .WithMany()
@@ -526,7 +533,7 @@ namespace Clinicia.Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Clinicia.Repositories.Schemas.DbUser")
                         .WithMany()
@@ -536,20 +543,9 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbDoctor", b =>
                 {
-                    b.HasOne("Clinicia.Repositories.Schemas.DbLocation", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("Clinicia.Repositories.Schemas.DbSpecialty", "Specialty")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecialtyId");
-                });
-
-            modelBuilder.Entity("Clinicia.Repositories.Schemas.DbPatient", b =>
-                {
-                    b.HasOne("Clinicia.Repositories.Schemas.DbLocation", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
                 });
 #pragma warning restore 612, 618
         }

@@ -24,18 +24,11 @@ namespace Clinicia.Repositories.Implementations
             return await Context.Specialties
                 .Include(x => x.Doctors)
                 .WhereIf(isActive.HasValue, x => x.IsActive == isActive)
+                .OrderBy(x => x.Name)
                 .GetPagedResultAsync(
-                    q => q.OrderBy(x => x.Name),
                     page,
                     pageSize,
-                    x => new Specialty
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Image = x.Image,
-                        IsActive = x.IsActive,
-                        NumberOfDoctors = x.Doctors.Count
-                    }
+                    x => _mapper.Map<Specialty>(x)
                 );
         }
     }

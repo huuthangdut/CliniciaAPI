@@ -9,15 +9,14 @@ namespace Clinicia.Repositories.Schemas
     public class DbWorkingSchedule : IFullEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime FromDate { get; set; }
 
         [StringLength(126)]
         public string Hours { get; set; }
 
-        public string DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

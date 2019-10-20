@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using Clinicia.Common.Enums;
 
 namespace Clinicia.Common.Extensions
 {

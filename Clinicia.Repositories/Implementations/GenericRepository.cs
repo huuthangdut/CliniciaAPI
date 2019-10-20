@@ -57,7 +57,7 @@ namespace Clinicia.Repositories.Implementations
             return await Table.FirstOrDefaultAsync(predicate);
         }
 
-        public TEntity Get(int id)
+        public TEntity Get(Guid id)
         {
             var entity = Table.FirstOrDefault(x => x.Id == id);
             if (entity == null)
@@ -68,7 +68,7 @@ namespace Clinicia.Repositories.Implementations
             return entity;
         }
 
-        public async Task<TEntity> GetAsync(int id)
+        public async Task<TEntity> GetAsync(Guid id)
         {
             var entity = await Table.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
@@ -169,7 +169,7 @@ namespace Clinicia.Repositories.Implementations
             Update(entity);
         }
 
-        public void Deactive(int id)
+        public void Deactive(Guid id)
         {
             var entity = Get(id);
 
@@ -189,7 +189,7 @@ namespace Clinicia.Repositories.Implementations
             Update(entity);
         }
 
-        public void Active(int id)
+        public void Active(Guid id)
         {
             var entity = Get(id);
 
@@ -211,7 +211,7 @@ namespace Clinicia.Repositories.Implementations
             return Task.FromResult(0);
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var entity = GetFromChangeTrackerOrNull(id);
             if (entity != null)
@@ -228,7 +228,7 @@ namespace Clinicia.Repositories.Implementations
             }
         }
 
-        public virtual Task DeleteAsync(int id)
+        public virtual Task DeleteAsync(Guid id)
         {
             Delete(id);
             return Task.FromResult(0);
@@ -279,13 +279,13 @@ namespace Clinicia.Repositories.Implementations
             Table.Attach(entity);
         }
 
-        private TEntity GetFromChangeTrackerOrNull(int id)
+        private TEntity GetFromChangeTrackerOrNull(Guid id)
         {
             var entry = Context.ChangeTracker.Entries()
                 .FirstOrDefault(
                     ent =>
                         ent.Entity is TEntity &&
-                        EqualityComparer<int>.Default.Equals(id, ((TEntity)ent.Entity).Id)
+                        EqualityComparer<Guid>.Default.Equals(id, ((TEntity)ent.Entity).Id)
                 );
 
             return entry?.Entity as TEntity;
@@ -293,7 +293,7 @@ namespace Clinicia.Repositories.Implementations
 
         private static bool IsTransient(IEntity entity)
         {
-            return entity.Id <= 0;
+            return entity.Id == default(Guid);
         }
     }
 }

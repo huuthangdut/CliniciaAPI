@@ -1,4 +1,5 @@
-﻿using Clinicia.Repositories.Schemas.Interfaces;
+﻿using System;
+using Clinicia.Repositories.Schemas.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,8 +9,7 @@ namespace Clinicia.Repositories.Schemas
     public class DbLocation : IEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public double Longitude { get; set; }
 

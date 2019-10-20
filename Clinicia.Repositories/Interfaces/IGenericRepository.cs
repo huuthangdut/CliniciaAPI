@@ -18,9 +18,9 @@ namespace Clinicia.Repositories.Interfaces
 
         Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
-        TEntity Get(int id);
+        TEntity Get(Guid id);
 
-        Task<TEntity> GetAsync(int id);
+        Task<TEntity> GetAsync(Guid id);
 
         bool Exist(Expression<Func<TEntity, bool>> predicate);
 
@@ -52,19 +52,19 @@ namespace Clinicia.Repositories.Interfaces
 
         void Deactive(TEntity entity);
 
-        void Deactive(int id);
+        void Deactive(Guid id);
 
         void Active(TEntity entity);
 
-        void Active(int id);
+        void Active(Guid id);
 
         void Delete(TEntity entity);
 
         Task DeleteAsync(TEntity entity);
 
-        void Delete(int id);
+        void Delete(Guid id);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(Guid id);
 
         void Delete(Expression<Func<TEntity, bool>> predicate);
 

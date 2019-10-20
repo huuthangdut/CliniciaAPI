@@ -7,6 +7,41 @@ namespace Clinicia.Repositories.Helpers.Linq
 {
     public static class QueryableIncludeExtensions
     {
+        public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, params Expression<Func<T, object>>[] includes)
+            where T : class
+        {
+            if (includes != null)
+            {
+                query = includes.Aggregate(
+                    query,
+                    (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
+
+        public static IQueryable<T> IncludeMultipleIf<T>(this IQueryable<T> query, bool condition, params Expression<Func<T, object>>[] includes)
+            where T : class
+        {
+            if (condition && includes != null)
+            {
+                query = includes.Aggregate(
+                    query,
+                    (current, include) => current.Include(include));
+            }
+
+            return query;
+        }
+
+
+        public static IQueryable<TCollection> IncludeIf<TCollection, TProperty>(
+            this IQueryable<TCollection> source,
+            bool condition,
+            Expression<Func<TCollection, TProperty>> path) where TCollection : class
+        {
+            return condition ? source.Include(path) : source;
+        }
+
         public static IQueryable<TCollection> Includes<TCollection, TEntity, TProperty>(
             this IQueryable<TCollection> source,
             Expression<Func<TCollection, TEntity>> entityExpression,

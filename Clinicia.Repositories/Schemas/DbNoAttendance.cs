@@ -9,8 +9,7 @@ namespace Clinicia.Repositories.Schemas
     public class DbNoAttendance : IFullEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime FromDate { get; set; }
 
@@ -19,7 +18,7 @@ namespace Clinicia.Repositories.Schemas
         [StringLength(256)]
         public string Reason { get; set; }
 
-        public string DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

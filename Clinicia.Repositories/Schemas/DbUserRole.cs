@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Clinicia.Repositories.Schemas
 {
-    public class DbUserRole : IdentityUserRole<string>
+    public class DbUserRole : IdentityUserRole<Guid>
     {
         public virtual DbUser User { get; set; }
 

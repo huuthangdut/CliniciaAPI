@@ -9,8 +9,7 @@ namespace Clinicia.Repositories.Schemas
     public class DbAppointment : IFullEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime DateVisit { get; set; }
@@ -31,9 +30,9 @@ namespace Clinicia.Repositories.Schemas
 
         public int Status { get; set; }
 
-        public string DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
-        public string PatientId { get; set; }
+        public Guid PatientId { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

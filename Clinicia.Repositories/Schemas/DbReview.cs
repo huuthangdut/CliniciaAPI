@@ -8,15 +8,16 @@ namespace Clinicia.Repositories.Schemas
     [Table("Reviews")]
     public class DbReview : IFullEntity
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         public int Rating { get; set; }
 
         public string Comment { get; set; }
 
-        public string DoctorId { get; set; }
+        public Guid DoctorId { get; set; }
 
-        public string PatientId { get; set; }
+        public Guid PatientId { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

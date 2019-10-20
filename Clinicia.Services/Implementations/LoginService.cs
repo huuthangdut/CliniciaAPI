@@ -1,6 +1,6 @@
-﻿using Clinicia.Common;
-using Clinicia.Common.Enums;
+﻿using Clinicia.Common.Enums;
 using Clinicia.Common.Runtime.Security;
+using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Schemas;
 using Clinicia.Repositories.UnitOfWork;
 using Clinicia.Services.Interfaces;
@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Clinicia.Dtos.Output;
 
 namespace Clinicia.Services.Implementations
 {
@@ -70,7 +69,7 @@ namespace Clinicia.Services.Implementations
         {
             var userClaims = new List<Claim>
             {
-                new Claim(ClaimIdentityTypes.UserId, user.Id),
+                new Claim(ClaimIdentityTypes.UserId, user.Id.ToString()),
                 new Claim(ClaimIdentityTypes.UserName, user.UserName),
                 new Claim(ClaimIdentityTypes.FirstName, user.FirstName),
                 new Claim(ClaimIdentityTypes.LastName, user.LastName),

@@ -10,8 +10,7 @@ namespace Clinicia.Repositories.Schemas
     public class DbSpecialty : IFullEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [StringLength(256)]
         public string Name { get; set; }

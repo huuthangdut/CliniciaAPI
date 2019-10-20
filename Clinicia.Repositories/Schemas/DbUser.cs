@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clinicia.Repositories.Schemas
 {
-    public class DbUser : IdentityUser<string>, ISoftDeleteEntity, IActiveableEntity, IAuditableEntity
+    public class DbUser : IdentityUser<Guid>, IFullEntity
     {
         [StringLength(256)]
         public string FirstName { get; set; }
@@ -22,6 +22,8 @@ namespace Clinicia.Repositories.Schemas
         [Column(TypeName = "date")]
         public DateTime? BirthDate { get; set; }
 
+        public Guid? LocationId { get; set; }
+
         public DateTime? CreatedDate { get; set; }
 
         [StringLength(50)]
@@ -35,6 +37,9 @@ namespace Clinicia.Repositories.Schemas
         public bool IsActive { get; set; }
 
         public bool IsDelete { get; set; }
+
+        [ForeignKey("LocationId")]
+        public virtual DbLocation Location { get; set; }
 
         public virtual ICollection<DbUserRole> UserRoles { get; set; }
     }

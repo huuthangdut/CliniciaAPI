@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Clinicia.Repositories.Schemas.Interfaces;
 
 namespace Clinicia.Repositories.Schemas
 {
     [Table("Doctors")]
     public class DbDoctor : DbUser
     {
+        public decimal? Price { get; set; }
+
         [StringLength(256)]
         public string Clinic { get; set; }
 
@@ -17,15 +21,10 @@ namespace Clinicia.Repositories.Schemas
 
         public int? YearExperience { get; set; }
 
-        public int? SpecialtyId { get; set; }
-
-        public int? LocationId { get; set; }
+        public Guid? SpecialtyId { get; set; }
 
         [ForeignKey("SpecialtyId")]
         public virtual DbSpecialty Specialty { get; set; }
-
-        [ForeignKey("LocationId")]
-        public virtual DbLocation Location { get; set; }
 
         public virtual ICollection<DbAppointment> Appointments { get; set; }
 

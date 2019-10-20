@@ -8,18 +8,22 @@ namespace Clinicia.Repositories.UnitOfWork
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private readonly ISpecialtyRepository specialtyRepository;
+        private readonly ISpecialtyRepository _specialtyRepository;
 
-        private readonly IMapper mapper;
+        private readonly IDoctorRepository _doctorRepository;
+
+        private readonly IMapper _mapper;
 
         public CliniciaDbContext Context { get; }
 
-        public ISpecialtyRepository SpecialtyRepository => specialtyRepository ?? new SpecialtyRepository(Context, mapper);
+        public ISpecialtyRepository SpecialtyRepository => _specialtyRepository ?? new SpecialtyRepository(Context, _mapper);
+
+        public IDoctorRepository DoctorRepository => _doctorRepository ?? new DoctorRepository(Context, _mapper);
 
         public UnitOfWork(CliniciaDbContext context, IMapper mapper)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            this.mapper = mapper;
+            _mapper = mapper;
         }
 
         public int Complete()

@@ -27,8 +27,8 @@ namespace Clinicia.WebApi
             //Auto Mapper Configurations
             services.AddSingleton(provider => new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new EntityToSchemaMappingProfile());
-                mc.AddProfile(new SchemaToEntityMappingProfile());
+                mc.AddProfile(new DtoToSchemaMappingProfile());
+                mc.AddProfile(new SchemaToDtoMappingProfile());
                 mc.AddProfile(new DtoToResultMappingProfile());
                 mc.AddProfile(new ModelToDtoMappingProfile());
             }).CreateMapper());

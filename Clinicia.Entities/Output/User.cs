@@ -1,8 +1,10 @@
-﻿namespace Clinicia.Dtos.Output
+﻿using System;
+
+namespace Clinicia.Dtos.Output
 {
     public class User
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string FirstName { get; set; }
 

@@ -11,7 +11,6 @@ namespace Clinicia.Repositories.Helpers.Linq
     {
         public static async Task<PagedResult<TResult>> GetPagedResultAsync<T, TResult>(
             this IQueryable<T> source,
-            Func<IQueryable<T>, IOrderedQueryable<T>> setOrderFunction,
             int pageIndex,
             int pageSize,
             Func<T, TResult> convert)
@@ -23,7 +22,7 @@ namespace Clinicia.Repositories.Helpers.Linq
 
             var count = await source.CountAsync().ConfigureAwait(false);
 
-            var items = await setOrderFunction(source)
+            var items = await source
                 .PageBy(pageIndex * pageSize, pageSize)
                 .MakeQueryToDatabaseAsync()
                 .ConfigureAwait(false);

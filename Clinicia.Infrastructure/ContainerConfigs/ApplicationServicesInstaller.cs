@@ -22,6 +22,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<IRegisterService, RegisterService>();
             services.AddTransient<ISpecialtyService, SpecialtyService>();
             services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IDoctorService, DoctorService>();
         }
     }
 }

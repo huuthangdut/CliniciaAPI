@@ -12,10 +12,13 @@ namespace Clinicia.Repositories.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
-                    Latitude = table.Column<double>(nullable: false)
+                    Latitude = table.Column<double>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    Zip = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,7 +29,7 @@ namespace Clinicia.Repositories.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -40,8 +43,7 @@ namespace Clinicia.Repositories.Migrations
                 name: "Specialties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     Image = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: true),
@@ -57,39 +59,12 @@ namespace Clinicia.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clinics",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    LocationId = table.Column<int>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: true),
-                    CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: true),
-                    UpdatedUser = table.Column<string>(maxLength: 50, nullable: true),
-                    IsActive = table.Column<bool>(nullable: false),
-                    IsDelete = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clinics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Clinics_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -105,38 +80,10 @@ namespace Clinicia.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Holidays",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FromDate = table.Column<DateTime>(nullable: false),
-                    ToDate = table.Column<DateTime>(nullable: false),
-                    Reason = table.Column<string>(maxLength: 256, nullable: true),
-                    ClinicId = table.Column<int>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: true),
-                    CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: true),
-                    UpdatedUser = table.Column<string>(maxLength: 50, nullable: true),
-                    IsActive = table.Column<bool>(nullable: false),
-                    IsDelete = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Holidays", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Holidays_Clinics_ClinicId",
-                        column: x => x.ClinicId,
-                        principalTable: "Clinics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -156,6 +103,7 @@ namespace Clinicia.Repositories.Migrations
                     ImageProfile = table.Column<string>(nullable: true),
                     Gender = table.Column<bool>(nullable: true),
                     BirthDate = table.Column<DateTime>(type: "date", nullable: true),
+                    LocationId = table.Column<Guid>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
@@ -163,29 +111,16 @@ namespace Clinicia.Repositories.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     IsDelete = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
+                    Price = table.Column<decimal>(nullable: true),
+                    Clinic = table.Column<string>(maxLength: 256, nullable: true),
                     MedicalSchool = table.Column<string>(maxLength: 256, nullable: true),
                     Awards = table.Column<string>(nullable: true),
                     YearExperience = table.Column<int>(nullable: true),
-                    SpecialtyId = table.Column<int>(nullable: true),
-                    ClinicId = table.Column<int>(nullable: true),
-                    LocationId = table.Column<int>(nullable: true),
-                    DbPatient_LocationId = table.Column<int>(nullable: true)
+                    SpecialtyId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Clinics_ClinicId",
-                        column: x => x.ClinicId,
-                        principalTable: "Clinics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Users_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Users_Specialties_SpecialtyId",
                         column: x => x.SpecialtyId,
@@ -193,8 +128,8 @@ namespace Clinicia.Repositories.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Users_Locations_DbPatient_LocationId",
-                        column: x => x.DbPatient_LocationId,
+                        name: "FK_Users_Locations_LocationId",
+                        column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -204,8 +139,7 @@ namespace Clinicia.Repositories.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     DateVisit = table.Column<DateTime>(type: "date", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -214,8 +148,8 @@ namespace Clinicia.Repositories.Migrations
                     PrivateResult = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    DoctorId = table.Column<string>(nullable: true),
-                    PatientId = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<Guid>(nullable: false),
+                    PatientId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
@@ -231,25 +165,24 @@ namespace Clinicia.Repositories.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Users_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "NoAttendances",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     FromDate = table.Column<DateTime>(nullable: false),
                     ToDate = table.Column<DateTime>(nullable: false),
                     Reason = table.Column<string>(maxLength: 256, nullable: true),
-                    DoctorId = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
@@ -265,7 +198,40 @@ namespace Clinicia.Repositories.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Rating = table.Column<int>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<Guid>(nullable: false),
+                    PatientId = table.Column<Guid>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
+                    CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
+                    UpdatedDate = table.Column<DateTime>(nullable: true),
+                    UpdatedUser = table.Column<string>(maxLength: 50, nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,7 +240,7 @@ namespace Clinicia.Repositories.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -296,7 +262,7 @@ namespace Clinicia.Repositories.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -313,8 +279,8 @@ namespace Clinicia.Repositories.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,7 +303,7 @@ namespace Clinicia.Repositories.Migrations
                 name: "UserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -357,11 +323,10 @@ namespace Clinicia.Repositories.Migrations
                 name: "WorkingSchedules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     FromDate = table.Column<DateTime>(nullable: false),
                     Hours = table.Column<string>(maxLength: 126, nullable: true),
-                    DoctorId = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<Guid>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     CreatedUser = table.Column<string>(maxLength: 50, nullable: true),
                     UpdatedDate = table.Column<DateTime>(nullable: true),
@@ -377,7 +342,7 @@ namespace Clinicia.Repositories.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -391,19 +356,19 @@ namespace Clinicia.Repositories.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clinics_LocationId",
-                table: "Clinics",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Holidays_ClinicId",
-                table: "Holidays",
-                column: "ClinicId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_NoAttendances_DoctorId",
                 table: "NoAttendances",
                 column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_DoctorId",
+                table: "Reviews",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_PatientId",
+                table: "Reviews",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -432,24 +397,14 @@ namespace Clinicia.Repositories.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_ClinicId",
-                table: "Users",
-                column: "ClinicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_LocationId",
-                table: "Users",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_SpecialtyId",
                 table: "Users",
                 column: "SpecialtyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_DbPatient_LocationId",
+                name: "IX_Users_LocationId",
                 table: "Users",
-                column: "DbPatient_LocationId");
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -474,10 +429,10 @@ namespace Clinicia.Repositories.Migrations
                 name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Holidays");
+                name: "NoAttendances");
 
             migrationBuilder.DropTable(
-                name: "NoAttendances");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
@@ -502,9 +457,6 @@ namespace Clinicia.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Clinics");
 
             migrationBuilder.DropTable(
                 name: "Specialties");
