@@ -7,14 +7,13 @@ using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Models;
 using Clinicia.WebApi.Results;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Clinicia.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [Authorize]
     public class DoctorsController : BaseApiController
     {
         private readonly IDoctorService _doctorService;
@@ -40,6 +39,14 @@ namespace Clinicia.WebApi.Controllers.V1
             var result = await _doctorService.GetDoctorsAsync(page, pageSize, filter, sortOptions);
 
             return Success(_mapper.Map<PagedResult<DoctorResult>>(result));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] string id)
+        {
+            var result = await _doctorService.GetAsync(new Guid(id));
+
+            return Success(_mapper.Map<DoctorDetailsResult>(result));
         }
 
     }

@@ -18,6 +18,9 @@ namespace Clinicia.WebApi.Mappings
 
             CreateMap<Doctor, DoctorResult>();
             CreateMap<PagedResult<Doctor>, PagedResult<DoctorResult>>();
+
+            CreateMap<DoctorDetails, DoctorDetailsResult>()
+                .IncludeBase<Doctor, DoctorResult>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clinicia.Common.Enums;
+using Clinicia.Common.Exceptions;
 using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Input;
@@ -8,6 +9,7 @@ using Clinicia.Repositories.Helpers.Linq;
 using Clinicia.Repositories.Interfaces;
 using Clinicia.Repositories.Projections;
 using Clinicia.Repositories.Schemas;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -78,6 +80,40 @@ namespace Clinicia.Repositories.Implementations
             }
 
             return await query.GetPagedResultAsync(page, pageSize, x => _mapper.Map<Doctor>(x));
+        }
+
+        public async Task<DoctorDetails> GetDoctorAsync(Guid id)
+        {
+            var doctor = await Context.Doctors
+                .IncludeMultiple(x => x.Specialty, x => x.Reviews, x => x.Location, x => x.Appointments)
+                .Where(x => x.Id == id && x.IsActive)
+                .Select(x => new DoctorDetailsProjection
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Gender = x.Gender,
+                    YearExperience = x.YearExperience,
+                    Awards = x.Awards,
+                    ImageProfile = x.ImageProfile,
+                    MedicalSchool = x.MedicalSchool,
+                    Clinic = x.Clinic,
+                    Price = x.Price,
+                    Location = x.Location,
+                    Specialty = x.Specialty,
+                    Rating = (double?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
+                    RatingCount = x.Reviews.Count(r => r.IsActive),
+                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude),
+                    NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count() // Distinct here
+                })
+                .FirstOrDefaultAsync();
+
+            if (doctor == null)
+            {
+                throw new EntityNotFoundException(typeof(DbDoctor), id);
+            }
+
+            return _mapper.Map<DoctorDetails>(doctor);
         }
 
         private Expression<Func<DbDoctor, bool>> GetCompareYearExperiencePredicate(Symbol? symbol, int? comparedValue)

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Clinicia.Common.Enums;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Input;
@@ -10,5 +11,7 @@ namespace Clinicia.Services.Interfaces
     {
         Task<PagedResult<Doctor>> GetDoctorsAsync(int page, int pageSize, FilterDoctor filter,
             SortOptions<SortDoctorField> sortOptions);
+
+        Task<DoctorDetails> GetAsync(Guid id);
     }
 }
