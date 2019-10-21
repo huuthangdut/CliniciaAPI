@@ -14,6 +14,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Clinicia.Common;
+using Clinicia.Common.Extensions;
 
 namespace Clinicia.Repositories.Implementations
 {
@@ -114,6 +116,51 @@ namespace Clinicia.Repositories.Implementations
             }
 
             return _mapper.Map<DoctorDetails>(doctor);
+        }
+
+        public async Task<DoctorWorkingTime> GetAvailableWorkingTime(Guid id, DateTime date)
+        {
+            date = date.Date;
+
+            var doctorTime = await Context.Doctors
+                .IncludeMultiple(x => x.Appointments, x => x.WorkingSchedules, x => x.NoAttendances)
+                .Where(x => x.IsActive && x.Id == id)
+                .Select(x => new DoctorTimeProjection
+                {
+                    WorkingHoursInDay = x.WorkingSchedules
+                        .Where(ws => ws.IsActive && date.Date >= ws.FromDate.Date)
+                        .Select(ws => ws.Hours.ToWorkingTimes(date.DayOfWeek))
+                        .FirstOrDefault(),
+                    TimeOffInDay = x.NoAttendances
+                        .Where(na => na.IsActive && date.IsBetween(na.FromDate, na.ToDate))
+                        .Select(na => GetTimeRange(na.FromDate, na.ToDate, date))
+                        .ToArray(),
+                    TimeBusyInDay = x.Appointments
+                        .Where(a => a.IsActive && a.Status != (int)AppointmentStatus.Cancelled && a.DoctorId == id && a.DateVisit.Date == date.Date)
+                        .Select(a => new TimeRange(a.StartTime, a.EndTime))
+                        .ToArray()
+                })
+                .FirstOrDefaultAsync();
+
+            var result = new DoctorWorkingTime
+            {
+                DoctorId = id,
+                WorkingDate = date,
+                WorkingTimes = doctorTime.WorkingHoursInDay
+                    .ConvertArray(wh =>
+                        TimeRangeUtils.GetTimeFrame(wh, doctorTime.TimeOffInDay, doctorTime.TimeBusyInDay))
+                    .ToSingleArray()
+            };
+
+            return result;
+        }
+
+        private TimeRange GetTimeRange(DateTime fromDate, DateTime toDate, DateTime date)
+        {
+            var timeFrom = fromDate.Date < date.Date ? new TimeSpan(0, 0, 0) : fromDate.TimeOfDay;
+            var timeTo = toDate.Date > date.Date ? new TimeSpan(23, 59, 00) : toDate.TimeOfDay;
+
+            return new TimeRange(timeFrom, timeTo);
         }
 
         private Expression<Func<DbDoctor, bool>> GetCompareYearExperiencePredicate(Symbol? symbol, int? comparedValue)

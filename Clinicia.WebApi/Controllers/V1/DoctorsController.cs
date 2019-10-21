@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Extensions;
+using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Input;
 using Clinicia.Infrastructure.ApiControllers;
@@ -47,6 +48,14 @@ namespace Clinicia.WebApi.Controllers.V1
             var result = await _doctorService.GetAsync(new Guid(id));
 
             return Success(_mapper.Map<DoctorDetailsResult>(result));
+        }
+
+        [HttpGet("{id}/workingTime")]
+        public async Task<IActionResult> GetWorkingTime([FromRoute] string id, [FromQuery] WorkingTimeParams workingTimeParams)
+        {
+            var result = await _doctorService.GetAvailableWorkingTime(id.ParseGuid(), workingTimeParams.Date.FromUnixTimeStamp().GetValueOrDefault());
+
+            return Success(_mapper.Map<DoctorWorkingTimeResult>(result));
         }
 
     }

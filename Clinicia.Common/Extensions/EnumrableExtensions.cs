@@ -55,5 +55,21 @@ namespace Clinicia.Common.Extensions
         {
             return source == null ? EmptyArray<TSource>.Instance : source.ToArray();
         }
+
+        public static IEnumerable<T> ConcatIfNotNullOrEmpty<T>(this IEnumerable<T> src, IEnumerable<T> des)
+        {
+            return (des != null && des.Any()) ? src.Concat(des) : src;
+        }
+
+        public static T[] ToSingleArray<T>(this IEnumerable<IEnumerable<T>> obj)
+        {
+            IEnumerable<T> result = new List<T>();
+            foreach (var list in obj)
+            {
+                result = result.ConcatIfNotNullOrEmpty(list);
+            }
+
+            return result.ToArray();
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace Clinicia.Repositories.Interfaces
         Task<PagedResult<Doctor>> GetDoctorsAsync(int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions);
 
         Task<DoctorDetails> GetDoctorAsync(Guid id);
+
+        Task<DoctorWorkingTime> GetAvailableWorkingTime(Guid id, DateTime date);
     }
 }

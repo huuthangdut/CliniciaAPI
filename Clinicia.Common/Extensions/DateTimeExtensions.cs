@@ -223,5 +223,41 @@ namespace Clinicia.Common.Extensions
             }
             return false;
         }
+
+        public static TimeSpan ToTimeSpan(this string value)
+        {
+            try
+            {
+                return DateTime.ParseExact(value, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
+            }
+            catch
+            {
+               throw new FormatException();
+            }
+        }
+
+        public static TimeRange[] ToWorkingTimes(this string hours, DayOfWeek dayOfWeek)
+        {
+            try
+            {
+                var hour = hours.Split(',');
+                var hourOfDay = hour[(int)dayOfWeek];
+                var timeRangeOfDay = hourOfDay.Split('+');
+                var timeRangeResult = new List<TimeRange>();
+                foreach (var timeRange in timeRangeOfDay)
+                {
+                    var time = timeRange.Split('-');
+                    var timeFrom = time[0];
+                    var timeTo = time[1];
+                    timeRangeResult.Add(new TimeRange(timeFrom, timeTo));
+                }
+
+                return timeRangeResult.ToArray();
+            }
+            catch
+            {
+                throw new FormatException();
+            }
+        }
     }
 }

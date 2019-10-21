@@ -13,5 +13,7 @@ namespace Clinicia.Services.Interfaces
             SortOptions<SortDoctorField> sortOptions);
 
         Task<DoctorDetails> GetAsync(Guid id);
+
+        Task<DoctorWorkingTime> GetAvailableWorkingTime(Guid id, DateTime date);
     }
 }
