@@ -26,6 +26,14 @@ namespace Clinicia.Common
 
     public static class TimeRangeUtils
     {
+        public static TimeRange GetTimeRange(DateTime fromDate, DateTime toDate, DateTime date)
+        {
+            var timeFrom = fromDate.Date < date.Date ? new TimeSpan(0, 0, 0) : fromDate.TimeOfDay;
+            var timeTo = toDate.Date > date.Date ? new TimeSpan(23, 59, 00) : toDate.TimeOfDay;
+
+            return new TimeRange(timeFrom, timeTo);
+        }
+
         public static TimeSpan[] GetTimeFrame(TimeRange timeRange, TimeRange[] breakTimes, TimeRange[] extraBreakTimes, TimeRange filter = null, int timeOffsetMinutes = 30)
         {
             // has filter

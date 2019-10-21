@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Clinicia.Common;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
+using Clinicia.Common.Extensions;
 using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Input;
@@ -14,8 +16,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Clinicia.Common;
-using Clinicia.Common.Extensions;
 
 namespace Clinicia.Repositories.Implementations
 {
@@ -133,7 +133,7 @@ namespace Clinicia.Repositories.Implementations
                         .FirstOrDefault(),
                     TimeOffInDay = x.NoAttendances
                         .Where(na => na.IsActive && date.IsBetween(na.FromDate, na.ToDate))
-                        .Select(na => GetTimeRange(na.FromDate, na.ToDate, date))
+                        .Select(na => TimeRangeUtils.GetTimeRange(na.FromDate, na.ToDate, date))
                         .ToArray(),
                     TimeBusyInDay = x.Appointments
                         .Where(a => a.IsActive && a.Status != (int)AppointmentStatus.Cancelled && a.DoctorId == id && a.DateVisit.Date == date.Date)
@@ -153,14 +153,6 @@ namespace Clinicia.Repositories.Implementations
             };
 
             return result;
-        }
-
-        private TimeRange GetTimeRange(DateTime fromDate, DateTime toDate, DateTime date)
-        {
-            var timeFrom = fromDate.Date < date.Date ? new TimeSpan(0, 0, 0) : fromDate.TimeOfDay;
-            var timeTo = toDate.Date > date.Date ? new TimeSpan(23, 59, 00) : toDate.TimeOfDay;
-
-            return new TimeRange(timeFrom, timeTo);
         }
 
         private Expression<Func<DbDoctor, bool>> GetCompareYearExperiencePredicate(Symbol? symbol, int? comparedValue)
