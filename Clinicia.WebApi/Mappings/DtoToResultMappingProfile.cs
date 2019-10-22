@@ -26,6 +26,9 @@ namespace Clinicia.WebApi.Mappings
                 .IncludeBase<Doctor, DoctorResult>();
 
             CreateMap<DoctorWorkingTime, DoctorWorkingTimeResult>();
+
+            CreateMap<DoctorReview, DoctorReviewResult>();
+            CreateMap<PagedResult<DoctorReview>, PagedResult<DoctorReviewResult>>();
         }
     }
 }

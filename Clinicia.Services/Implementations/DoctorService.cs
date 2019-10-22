@@ -28,9 +28,14 @@ namespace Clinicia.Services.Implementations
             return await _unitOfWork.DoctorRepository.GetDoctorAsync(id);
         }
 
-        public async Task<DoctorWorkingTime> GetAvailableWorkingTime(Guid id, DateTime date)
+        public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date)
         {
-            return await _unitOfWork.DoctorRepository.GetAvailableWorkingTime(id, date);
+            return await _unitOfWork.DoctorRepository.GetAvailableWorkingTimeAsync(id, date);
+        }
+
+        public async Task<PagedResult<DoctorReview>> GetDoctorReviewsAsync(Guid id, int page, int pageSize)
+        {
+            return await _unitOfWork.ReviewRepository.GetDoctorReviewsAsync(id, page, pageSize);
         }
     }
 }

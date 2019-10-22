@@ -118,7 +118,7 @@ namespace Clinicia.Repositories.Implementations
             return _mapper.Map<DoctorDetails>(doctor);
         }
 
-        public async Task<DoctorWorkingTime> GetAvailableWorkingTime(Guid id, DateTime date)
+        public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date)
         {
             date = date.Date;
 

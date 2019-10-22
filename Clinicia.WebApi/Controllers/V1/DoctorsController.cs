@@ -53,9 +53,20 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet("{id}/workingTime")]
         public async Task<IActionResult> GetWorkingTime([FromRoute] string id, [FromQuery] WorkingTimeParams workingTimeParams)
         {
-            var result = await _doctorService.GetAvailableWorkingTime(id.ParseGuid(), workingTimeParams.Date.FromUnixTimeStamp().GetValueOrDefault());
+            var result = await _doctorService.GetAvailableWorkingTimeAsync(id.ParseGuid(), workingTimeParams.Date.FromUnixTimeStamp().GetValueOrDefault());
 
             return Success(_mapper.Map<DoctorWorkingTimeResult>(result));
+        }
+
+        [HttpGet("{id}/reviews")]
+        public async Task<IActionResult> GetDoctorReviews(
+            [FromRoute] string id,
+            [FromQuery] int page,
+            [FromQuery] int pageSize)
+        {
+            var result = await _doctorService.GetDoctorReviewsAsync(id.ParseGuid(), page, pageSize);
+
+            return Success(_mapper.Map<PagedResult<DoctorReviewResult>>(result));
         }
 
     }

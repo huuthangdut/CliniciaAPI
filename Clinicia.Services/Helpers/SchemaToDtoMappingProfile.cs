@@ -20,6 +20,12 @@ namespace Clinicia.Services.Helpers
                     opts => opts.MapFrom(x => x.Doctors.Count));
             CreateMap<DoctorDetailsProjection, DoctorDetails>()
                 .IncludeBase<DoctorProjection, Doctor>();
+
+            CreateMap<DbPatient, DictionaryItem>()
+                .ForMember(
+                    x => x.Name,
+                    opts => opts.MapFrom(x => x.FirstName + " " + x.LastName));
+            CreateMap<DbReview, DoctorReview>();
         }
     }
 }
