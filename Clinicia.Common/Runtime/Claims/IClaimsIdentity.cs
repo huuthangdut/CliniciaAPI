@@ -1,10 +1,12 @@
-﻿namespace Clinicia.Common.Runtime.Claims
+﻿using System;
+
+namespace Clinicia.Common.Runtime.Claims
 {
     public interface IClaimsIdentity
     {
-        int UserId { get; }
+        Guid UserId { get; }
 
-        int? GetUserId();
+        Guid? GetUserId();
 
         string UserName { get; }
 

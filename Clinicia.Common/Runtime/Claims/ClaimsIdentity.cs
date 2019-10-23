@@ -1,4 +1,5 @@
-﻿using Clinicia.Common.Runtime.Security;
+﻿using System;
+using Clinicia.Common.Runtime.Security;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Security.Authentication;
@@ -17,7 +18,7 @@ namespace Clinicia.Common.Runtime.Claims
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int UserId
+        public Guid UserId
         {
             get
             {
@@ -27,8 +28,8 @@ namespace Clinicia.Common.Runtime.Claims
                     throw new AuthenticationException("User not login to system");
                 }
 
-                int userId;
-                if (!int.TryParse(userIdClaim.Value, out userId))
+                Guid userId;
+                if (!Guid.TryParse(userIdClaim.Value, out userId))
                 {
                     throw new AuthenticationException("User not login to system");
                 }
@@ -37,7 +38,7 @@ namespace Clinicia.Common.Runtime.Claims
             }
         }
 
-        public int? GetUserId()
+        public Guid? GetUserId()
         {
             var userIdClaim = Principal?.Claims.FirstOrDefault(c => c.Type == ClaimIdentityTypes.UserId);
             if (string.IsNullOrEmpty(userIdClaim?.Value))
@@ -45,8 +46,8 @@ namespace Clinicia.Common.Runtime.Claims
                 return null;
             }
 
-            int userId;
-            if (!int.TryParse(userIdClaim.Value, out userId))
+            Guid userId;
+            if (!Guid.TryParse(userIdClaim.Value, out userId))
             {
                 return null;
             }
