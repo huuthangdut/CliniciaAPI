@@ -26,6 +26,9 @@ namespace Clinicia.Services.Helpers
                     x => x.Name,
                     opts => opts.MapFrom(x => x.FirstName + " " + x.LastName));
             CreateMap<DbReview, DoctorReview>();
+
+            CreateMap<UserFavoriteProjection, UserFavorite>();
+            CreateMap<FavoriteDoctorProjection, FavoriteDoctor>();
         }
     }
 }

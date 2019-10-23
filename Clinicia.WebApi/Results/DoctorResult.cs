@@ -23,9 +23,9 @@ namespace Clinicia.WebApi.Results
 
         public string Clinic { get; set; }
 
-        public double? Rating { get; set; }
+        public decimal? Rating { get; set; }
 
-        public double? RatingCount { get; set; }
+        public int? RatingCount { get; set; }
 
         public double DistanceFromPatient { get; set; }
 

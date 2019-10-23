@@ -12,7 +12,7 @@ namespace Clinicia.Dtos.Output
 
         public string Clinic { get; set; }
 
-        public double? Rating { get; set; }
+        public decimal? Rating { get; set; }
 
         public int? RatingCount { get; set; }
 

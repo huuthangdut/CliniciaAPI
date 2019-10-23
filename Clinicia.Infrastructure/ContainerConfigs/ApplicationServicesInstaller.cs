@@ -3,6 +3,7 @@ using Clinicia.Repositories.Audits;
 using Clinicia.Repositories.UnitOfWork;
 using Clinicia.Services.Implementations;
 using Clinicia.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +16,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuditHelper, AuditHelper>();
             services.AddScoped<IClaimsIdentity, ClaimsIdentity>();
-            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ITokenService, JwtTokenService>();
@@ -23,6 +24,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<ISpecialtyService, SpecialtyService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IDoctorService, DoctorService>();
+            services.AddTransient<IFavoriteService, FavoriteService>();
         }
     }
 }

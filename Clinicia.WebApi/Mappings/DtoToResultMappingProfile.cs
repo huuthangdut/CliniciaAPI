@@ -29,6 +29,10 @@ namespace Clinicia.WebApi.Mappings
 
             CreateMap<DoctorReview, DoctorReviewResult>();
             CreateMap<PagedResult<DoctorReview>, PagedResult<DoctorReviewResult>>();
+
+            CreateMap<FavoriteDoctor, FavoriteDoctorResult>();
+            CreateMap<UserFavorite, UserFavoriteResult>();
+            CreateMap<PagedResult<UserFavorite>, PagedResult<UserFavoriteResult>>();
         }
     }
 }

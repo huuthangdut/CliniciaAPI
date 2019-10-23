@@ -56,7 +56,7 @@ namespace Clinicia.Repositories.Implementations
                     Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
-                    Rating = (double?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
+                    Rating = (decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
                     RatingCount = x.Reviews.Count(r => r.IsActive),
                     DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude)
                 });
@@ -103,7 +103,7 @@ namespace Clinicia.Repositories.Implementations
                     Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
-                    Rating = (double?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
+                    Rating = (decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
                     RatingCount = x.Reviews.Count(r => r.IsActive),
                     DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude),
                     NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count() // Distinct here

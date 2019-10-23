@@ -46,6 +46,8 @@ namespace Clinicia.Repositories
 
         public DbSet<DbWorkingSchedule> WorkingSchedules { get; set; }
 
+        public DbSet<DbFavorite> Favorites { get; set; }
+
         public CliniciaDbContext(DbContextOptions options, IAuditHelper auditHelper)
             : base(options)
         {

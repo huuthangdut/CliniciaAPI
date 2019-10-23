@@ -13,6 +13,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         IReviewRepository ReviewRepository { get; }
 
+        IFavoriteRepository FavoriteRepository { get; }
+
         int Complete();
 
         Task<int> CompleteAsync();

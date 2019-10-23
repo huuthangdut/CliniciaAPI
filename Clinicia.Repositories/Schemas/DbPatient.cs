@@ -9,5 +9,7 @@ namespace Clinicia.Repositories.Schemas
         public virtual ICollection<DbAppointment> Appointments { get; set; }
 
         public virtual ICollection<DbReview> Reviews { get; set; }
+
+        public virtual ICollection<DbFavorite> Favorites { get; set; }
     }
 }

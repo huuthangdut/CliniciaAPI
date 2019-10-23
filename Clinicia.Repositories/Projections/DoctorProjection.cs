@@ -29,7 +29,7 @@ namespace Clinicia.Repositories.Projections
 
         public DbSpecialty Specialty { get; set; }
 
-        public double? Rating { get; set; }
+        public decimal? Rating { get; set; }
 
         public int? RatingCount { get; set; }
 

@@ -33,5 +33,7 @@ namespace Clinicia.Repositories.Schemas
         public virtual ICollection<DbNoAttendance> NoAttendances { get; set; }
 
         public virtual ICollection<DbReview> Reviews { get; set; }
+
+        public virtual ICollection<DbFavorite> Favorites { get; set; }
     }
 }
