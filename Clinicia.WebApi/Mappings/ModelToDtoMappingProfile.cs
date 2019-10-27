@@ -37,6 +37,8 @@ namespace Clinicia.WebApi.Mappings
                     opts => opts.MapFrom(x => x.YearExperience.GetCompareSymbol()));
 
             CreateMap<CreatedAppointmentModel, CreatedAppointment>();
+
+            CreateMap<CreatedReviewModel, CreatedReview>();
         }
     }
 }
