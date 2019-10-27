@@ -1,11 +1,11 @@
-﻿using Clinicia.Dtos.Common;
+﻿using Clinicia.Common.Exceptions;
+using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
+using Clinicia.Repositories.Schemas;
 using Clinicia.Repositories.UnitOfWork;
 using Clinicia.Services.Interfaces;
 using System;
 using System.Threading.Tasks;
-using Clinicia.Repositories.Schemas;
-using Clinicia.Common.Exceptions;
 
 namespace Clinicia.Services.Implementations
 {
