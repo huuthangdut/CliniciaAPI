@@ -11,14 +11,11 @@ namespace Clinicia.Repositories.Schemas
         [Key]
         public Guid Id { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime DateVisit { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
-        [Column(TypeName = "time")]
-        public TimeSpan StartTime { get; set; }
+        public int DurationInMinutes { get; set; }
 
-        [Column(TypeName = "time")]
-        public TimeSpan EndTime { get; set; }
+        public decimal Price { get; set; }
 
         public string Description { get; set; }
 

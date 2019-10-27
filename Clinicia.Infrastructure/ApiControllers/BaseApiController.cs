@@ -1,9 +1,12 @@
-﻿using System.Net.Mime;
-using Clinicia.Common.Enums;
+﻿using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
 using Clinicia.Dtos.Common;
 using Clinicia.Infrastructure.ApiResults;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net.Mime;
+using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Clinicia.Infrastructure.ApiControllers
 {
@@ -92,6 +95,39 @@ namespace Clinicia.Infrastructure.ApiControllers
             Response.Headers.Add("Content-Disposition", contentDisposition.ToString());
 
             return File(file.Data, file.ContentType, file.FileName);
+        }
+
+        protected Guid UserId
+        {
+            get
+            {
+                if (User == null || !User.Identity.IsAuthenticated)
+                {
+                    throw new AuthenticationException("User not login to system");
+                }
+
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                Guid userId;
+                if (!Guid.TryParse(userIdClaim, out userId))
+                {
+                    throw new AuthenticationException("User not login to system");
+                }
+
+                return userId;
+            }
+        }
+
+        protected Guid? GetUserId()
+        {
+            var userIdClaim = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdClaim, out var userId))
+            {
+                return null;
+            }
+
+            return userId;
         }
     }
 }

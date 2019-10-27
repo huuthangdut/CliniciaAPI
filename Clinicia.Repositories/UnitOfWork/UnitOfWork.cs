@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Clinicia.Repositories.Implementations;
 using Clinicia.Repositories.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Clinicia.Repositories.UnitOfWork
 {
@@ -16,6 +16,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         private readonly IFavoriteRepository _favoriteRepository;
 
+        private readonly IAppointmentRepository _appointmentRepository;
+
         private readonly IMapper _mapper;
 
         public CliniciaDbContext Context { get; }
@@ -27,6 +29,8 @@ namespace Clinicia.Repositories.UnitOfWork
         public IReviewRepository ReviewRepository => _reviewRepository ?? new ReviewRepository(Context, _mapper);
 
         public IFavoriteRepository FavoriteRepository => _favoriteRepository ?? new FavoriteRepository(Context, _mapper);
+
+        public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(Context, _mapper);
 
         public UnitOfWork(CliniciaDbContext context, IMapper mapper)
         {

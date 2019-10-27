@@ -29,6 +29,14 @@ namespace Clinicia.Services.Helpers
 
             CreateMap<UserFavoriteProjection, UserFavorite>();
             CreateMap<FavoriteDoctorProjection, FavoriteDoctor>();
+
+            CreateMap<DbAppointment, Appointment>();
+            CreateMap<DbDoctor, AppointmentDoctor>()
+                .ForMember(x => x.Name, opts => opts.MapFrom(x => $"{x.FirstName} {x.LastName}"))
+                .ForMember(x => x.Address,
+                    opts => opts.MapFrom(x => $"{x.Location.Address}, {x.Location.City}, {x.Location.Country}"))
+                .ForMember(x => x.Longitude, opts => opts.MapFrom(x => x.Location.Longitude))
+                .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude));
         }
     }
 }

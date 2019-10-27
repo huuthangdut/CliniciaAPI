@@ -136,8 +136,8 @@ namespace Clinicia.Repositories.Implementations
                         .Select(na => TimeRangeUtils.GetTimeRange(na.FromDate, na.ToDate, date))
                         .ToArray(),
                     TimeBusyInDay = x.Appointments
-                        .Where(a => a.IsActive && a.Status != (int)AppointmentStatus.Cancelled && a.DoctorId == id && a.DateVisit.Date == date.Date)
-                        .Select(a => new TimeRange(a.StartTime, a.EndTime))
+                        .Where(a => a.IsActive && a.Status != (int)AppointmentStatus.Cancelled && a.DoctorId == id && a.AppointmentDate.Date == date.Date)
+                        .Select(a => new TimeRange(a.AppointmentDate.TimeOfDay, a.AppointmentDate.TimeOfDay.Add(TimeSpan.FromMinutes(a.DurationInMinutes))))
                         .ToArray()
                 })
                 .FirstOrDefaultAsync();

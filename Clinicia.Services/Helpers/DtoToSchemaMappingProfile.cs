@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Clinicia.Dtos.Input;
+using Clinicia.Repositories.Schemas;
 
 namespace Clinicia.Services.Helpers
 {
@@ -6,6 +8,7 @@ namespace Clinicia.Services.Helpers
     {
         public DtoToSchemaMappingProfile()
         {
+            CreateMap<CreatedAppointment, DbAppointment>();
         }
     }
 }

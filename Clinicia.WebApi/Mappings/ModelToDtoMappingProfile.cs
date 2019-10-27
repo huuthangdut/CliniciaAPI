@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Extensions;
+using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Input;
 using Clinicia.WebApi.Models;
 
@@ -10,6 +12,13 @@ namespace Clinicia.WebApi.Mappings
     {
         public ModelToDtoMappingProfile()
         {
+            CreateMap<string, Guid?>()
+                .ConvertUsing(x => x.ParseNullableGuid());
+            CreateMap<string, Guid>()
+                .ConvertUsing(x => x.ParseGuid());
+            CreateMap<long, DateTime>()
+                .ConvertUsing(x => x.FromUnixTimeStamp());
+
             CreateMap<RegisterModel, AccountRegister>();
 
             CreateMap<FilterDoctorParams, FilterDoctor>()
@@ -26,6 +35,8 @@ namespace Clinicia.WebApi.Mappings
                 .ForMember(
                     x => x.FilterYearExperienceSymbol,
                     opts => opts.MapFrom(x => x.YearExperience.GetCompareSymbol()));
+
+            CreateMap<CreatedAppointmentModel, CreatedAppointment>();
         }
     }
 }

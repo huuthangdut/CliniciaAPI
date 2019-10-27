@@ -25,6 +25,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IFavoriteService, FavoriteService>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clinicia.Common.Extensions;
 using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
@@ -33,6 +34,14 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<FavoriteDoctor, FavoriteDoctorResult>();
             CreateMap<UserFavorite, UserFavoriteResult>();
             CreateMap<PagedResult<UserFavorite>, PagedResult<UserFavoriteResult>>();
+
+            CreateMap<AppointmentDoctor, AppointmentDoctorResult>();
+            CreateMap<Appointment, AppointmentResult>()
+                .ForMember(
+                    x => x.Price,
+                    opts => opts.MapFrom(x => x.Price.RoundTo(2))
+                    );
+            CreateMap<PagedResult<Appointment>, PagedResult<AppointmentResult>>();
         }
     }
 }

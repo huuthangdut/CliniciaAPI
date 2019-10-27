@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Clinicia.Dtos.Common;
 using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Clinicia.Dtos.Common;
 
 namespace Clinicia.WebApi.Controllers.V1
 {

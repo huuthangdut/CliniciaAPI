@@ -29,8 +29,7 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] int page, [FromQuery]int pageSize)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _favoriteService.GetUserFavoritesAsync(userId.ParseGuid(), page, pageSize);
+            var result = await _favoriteService.GetUserFavoritesAsync(UserId, page, pageSize);
 
             return Success(_mapper.Map<PagedResult<UserFavoriteResult>>(result));
         }
