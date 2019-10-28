@@ -11,7 +11,11 @@ namespace Clinicia.Services.Helpers
         public SchemaToDtoMappingProfile()
         {
             CreateMap<DbSpecialty, DictionaryItem>();
-            CreateMap<DbLocation, Location>();
+            CreateMap<DbLocation, Location>()
+                .ForMember(
+                    x => x.Address,
+                    opts => opts.MapFrom(x => x.FormattedAddress)
+                    );
             CreateMap<DbDoctor, Doctor>();
             CreateMap<DoctorProjection, Doctor>();
             CreateMap<DbSpecialty, Specialty>()
@@ -24,7 +28,7 @@ namespace Clinicia.Services.Helpers
             CreateMap<DbPatient, DictionaryItem>()
                 .ForMember(
                     x => x.Name,
-                    opts => opts.MapFrom(x => x.FirstName + " " + x.LastName));
+                    opts => opts.MapFrom(x => $"{x.FirstName} {x.LastName}"));
             CreateMap<DbReview, DoctorReview>();
 
             CreateMap<UserFavoriteProjection, UserFavorite>();
@@ -34,7 +38,7 @@ namespace Clinicia.Services.Helpers
             CreateMap<DbDoctor, AppointmentDoctor>()
                 .ForMember(x => x.Name, opts => opts.MapFrom(x => $"{x.FirstName} {x.LastName}"))
                 .ForMember(x => x.Address,
-                    opts => opts.MapFrom(x => $"{x.Location.Address}, {x.Location.City}, {x.Location.Country}"))
+                    opts => opts.MapFrom(x => x.Location.FormattedAddress))
                 .ForMember(x => x.Longitude, opts => opts.MapFrom(x => x.Location.Longitude))
                 .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude));
         }
