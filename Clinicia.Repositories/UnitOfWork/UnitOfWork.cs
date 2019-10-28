@@ -18,6 +18,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         private readonly IAppointmentRepository _appointmentRepository;
 
+        private readonly IPatientRepository _patientRepository;
+
         private readonly IMapper _mapper;
 
         public CliniciaDbContext Context { get; }
@@ -29,6 +31,8 @@ namespace Clinicia.Repositories.UnitOfWork
         public IReviewRepository ReviewRepository => _reviewRepository ?? new ReviewRepository(Context, _mapper);
 
         public IFavoriteRepository FavoriteRepository => _favoriteRepository ?? new FavoriteRepository(Context, _mapper);
+
+        public IPatientRepository PatientRepository => _patientRepository ?? new PatientRepository(Context, _mapper);
 
         public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(Context, _mapper);
 

@@ -39,6 +39,8 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<CreatedAppointmentModel, CreatedAppointment>();
 
             CreateMap<CreatedReviewModel, CreatedReview>();
+
+            CreateMap<UserLocationModel, UserLocation>();
         }
     }
 }
