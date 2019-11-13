@@ -4,6 +4,8 @@ namespace Clinicia.Dtos.Output
 {
     public class Doctor : User
     {
+        public decimal? Price { get; set; }
+
         public string MedicalSchool { get; set; }
 
         public string Awards { get; set; }

@@ -15,6 +15,8 @@ namespace Clinicia.WebApi.Results
 
         public bool? Gender { get; set; }
 
+        public decimal? Price { get; set; }
+
         public string MedicalSchool { get; set; }
 
         public string Awards { get; set; }

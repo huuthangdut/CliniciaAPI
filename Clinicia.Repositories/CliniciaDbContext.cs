@@ -48,6 +48,8 @@ namespace Clinicia.Repositories
 
         public DbSet<DbFavorite> Favorites { get; set; }
 
+        public DbSet<DbCheckingService> CheckingServices { get; set; }
+
         public CliniciaDbContext(DbContextOptions options, IAuditHelper auditHelper)
             : base(options)
         {

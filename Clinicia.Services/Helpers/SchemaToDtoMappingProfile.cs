@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clinicia.Common.Extensions;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Projections;
@@ -41,6 +42,9 @@ namespace Clinicia.Services.Helpers
                     opts => opts.MapFrom(x => x.Location.FormattedAddress))
                 .ForMember(x => x.Longitude, opts => opts.MapFrom(x => x.Location.Longitude))
                 .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude));
+
+            CreateMap<DbCheckingService, DoctorCheckingService>()
+                .ForMember(x => x.Price, opts => opts.MapFrom(x => x.Price.RoundTo(2)));
         }
     }
 }

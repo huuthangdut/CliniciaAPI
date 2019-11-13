@@ -5,6 +5,6 @@ namespace Clinicia.WebApi.Models
     public class WorkingTimeParams
     {
         [Required]
-        public long? Date { get; set; }
+        public string Date { get; set; }
     }
 }

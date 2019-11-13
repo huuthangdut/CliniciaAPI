@@ -6,12 +6,13 @@ using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Models;
 using Clinicia.WebApi.Results;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Clinicia.WebApi.Controllers.V1
 {
+    [ApiVersion("1.0")]
     [Authorize]
     public class AppointmentsController : BaseApiController
     {

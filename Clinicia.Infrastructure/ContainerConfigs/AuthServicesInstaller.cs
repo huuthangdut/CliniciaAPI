@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using Clinicia.Infrastructure.Extensions;
 
 namespace Clinicia.Infrastructure.ContainerConfigs
 {
@@ -82,19 +83,16 @@ namespace Clinicia.Infrastructure.ContainerConfigs
 
             // Configure Identity
             services
-                .AddIdentity<DbUser, DbRole>()
-                .AddEntityFrameworkStores<CliniciaDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddIdentityCore<DbDoctor>()
+                .AddDefaultIdentity<DbUser>()
                 .AddRoles<DbRole>()
-                .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<DbDoctor, IdentityRole>>()
-                .AddEntityFrameworkStores<CliniciaDbContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<CliniciaDbContext>();
+
+            services.AddSecondIdentity<DbDoctor, DbRole>();
+            services.AddSecondIdentity<DbPatient, DbRole>();
 
             services.AddIdentityCore<DbPatient>()
               .AddRoles<DbRole>()
-              .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<DbPatient, IdentityRole>>()
+              .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<DbPatient, DbRole>>()
               .AddEntityFrameworkStores<CliniciaDbContext>()
               .AddDefaultTokenProviders();
 

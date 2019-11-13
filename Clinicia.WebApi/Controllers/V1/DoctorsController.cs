@@ -45,7 +45,7 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] string id)
         {
-            var result = await _doctorService.GetAsync(new Guid(id));
+            var result = await _doctorService.GetAsync(id.ParseGuid());
 
             return Success(_mapper.Map<DoctorDetailsResult>(result));
         }
@@ -53,9 +53,17 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet("{id}/workingTime")]
         public async Task<IActionResult> GetWorkingTime([FromRoute] string id, [FromQuery] WorkingTimeParams workingTimeParams)
         {
-            var result = await _doctorService.GetAvailableWorkingTimeAsync(id.ParseGuid(), workingTimeParams.Date.FromUnixTimeStamp().GetValueOrDefault());
+            var result = await _doctorService.GetAvailableWorkingTimeAsync(id.ParseGuid(), workingTimeParams.Date.ParseDate("yyyyMMdd"));
 
             return Success(_mapper.Map<DoctorWorkingTimeResult>(result));
+        }
+
+        [HttpGet("{id}/checkingServices")]
+        public IActionResult GetCheckingServices([FromRoute] string id)
+        {
+            var result = _doctorService.GetCheckingServices(id.ParseGuid());
+
+            return Success(_mapper.Map<DoctorCheckingServiceResult[]>(result));
         }
 
         [HttpGet("{id}/reviews")]

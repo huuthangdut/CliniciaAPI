@@ -1,5 +1,6 @@
 ﻿using Clinicia.Repositories.Schemas.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,19 +14,19 @@ namespace Clinicia.Repositories.Schemas
 
         public DateTime AppointmentDate { get; set; }
 
-        public int DurationInMinutes { get; set; }
+        public int TotalMinutes { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal TotalPrice { get; set; }
 
-        public string Description { get; set; }
+        public string Note { get; set; }
 
         public string PublicResult { get; set; }
 
         public string PrivateResult { get; set; }
 
-        public int Type { get; set; }
-
         public int Status { get; set; }
+
+        public Guid CheckingServiceId { get; set; }
 
         public Guid DoctorId { get; set; }
 
@@ -44,6 +45,9 @@ namespace Clinicia.Repositories.Schemas
         public bool IsActive { get; set; }
 
         public bool IsDelete { get; set; }
+
+        [ForeignKey("CheckingServiceId")]
+        public virtual DbCheckingService CheckingService { get; set; }
 
         [ForeignKey("DoctorId")]
         public virtual DbDoctor Doctor { get; set; }

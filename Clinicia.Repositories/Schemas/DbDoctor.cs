@@ -9,8 +9,6 @@ namespace Clinicia.Repositories.Schemas
     [Table("Doctors")]
     public class DbDoctor : DbUser
     {
-        public decimal? Price { get; set; }
-
         [StringLength(256)]
         public string Clinic { get; set; }
 
@@ -25,6 +23,8 @@ namespace Clinicia.Repositories.Schemas
 
         [ForeignKey("SpecialtyId")]
         public virtual DbSpecialty Specialty { get; set; }
+
+        public virtual ICollection<DbCheckingService> CheckingServices { get; set; }
 
         public virtual ICollection<DbAppointment> Appointments { get; set; }
 

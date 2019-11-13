@@ -20,7 +20,15 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<Specialty, SpecialtyResult>();
             CreateMap<PagedResult<Specialty>, PagedResult<SpecialtyResult>>();
 
-            CreateMap<Doctor, DoctorResult>();
+            CreateMap<Doctor, DoctorResult>()
+                .ForMember(
+                    x => x.Price,
+                    opts => opts.MapFrom(x => x.Price.RoundTo(2))
+                    )
+                .ForMember(
+                    x => x.Rating,
+                    opts => opts.MapFrom(x => x.Rating.RoundTo(1))
+                );
             CreateMap<PagedResult<Doctor>, PagedResult<DoctorResult>>();
 
             CreateMap<DoctorDetails, DoctorDetailsResult>()
@@ -42,6 +50,7 @@ namespace Clinicia.WebApi.Mappings
                     opts => opts.MapFrom(x => x.Price.RoundTo(2))
                     );
             CreateMap<PagedResult<Appointment>, PagedResult<AppointmentResult>>();
+            CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();
         }
     }
 }

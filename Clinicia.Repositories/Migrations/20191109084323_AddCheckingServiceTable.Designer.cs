@@ -3,14 +3,16 @@ using System;
 using Clinicia.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinicia.Repositories.Migrations
 {
     [DbContext(typeof(CliniciaDbContext))]
-    partial class CliniciaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191109084323_AddCheckingServiceTable")]
+    partial class AddCheckingServiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,8 +25,6 @@ namespace Clinicia.Repositories.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("AppointmentDate");
-
-                    b.Property<Guid>("CheckingServiceId");
 
                     b.Property<DateTime?>("CreatedDate");
 
@@ -58,13 +58,29 @@ namespace Clinicia.Repositories.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CheckingServiceId");
-
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Clinicia.Repositories.Schemas.DbAppointmentDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AppointmentId");
+
+                    b.Property<Guid>("CheckingServiceId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("CheckingServiceId");
+
+                    b.ToTable("AppointmentDetails");
                 });
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbCheckingService", b =>
@@ -91,7 +107,9 @@ namespace Clinicia.Repositories.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal?>("PriceFrom");
+
+                    b.Property<decimal?>("PriceTo");
 
                     b.Property<DateTime?>("UpdatedDate");
 
@@ -512,11 +530,6 @@ namespace Clinicia.Repositories.Migrations
 
             modelBuilder.Entity("Clinicia.Repositories.Schemas.DbAppointment", b =>
                 {
-                    b.HasOne("Clinicia.Repositories.Schemas.DbCheckingService", "CheckingService")
-                        .WithMany()
-                        .HasForeignKey("CheckingServiceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Clinicia.Repositories.Schemas.DbDoctor", "Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
@@ -525,6 +538,19 @@ namespace Clinicia.Repositories.Migrations
                     b.HasOne("Clinicia.Repositories.Schemas.DbPatient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Clinicia.Repositories.Schemas.DbAppointmentDetail", b =>
+                {
+                    b.HasOne("Clinicia.Repositories.Schemas.DbAppointment", "Appointment")
+                        .WithMany("AppointmentDetails")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Clinicia.Repositories.Schemas.DbCheckingService", "CheckingService")
+                        .WithMany()
+                        .HasForeignKey("CheckingServiceId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

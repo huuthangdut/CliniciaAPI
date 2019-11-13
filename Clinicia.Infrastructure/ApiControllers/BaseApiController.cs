@@ -7,11 +7,11 @@ using System;
 using System.Net.Mime;
 using System.Security.Authentication;
 using System.Security.Claims;
+using Clinicia.Common.Runtime.Security;
 
 namespace Clinicia.Infrastructure.ApiControllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Produces(MediaTypeNames.Application.Json)]
     [ApiController]
     public class BaseApiController : Controller
     {
@@ -106,7 +106,7 @@ namespace Clinicia.Infrastructure.ApiControllers
                     throw new AuthenticationException("User not login to system");
                 }
 
-                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userIdClaim = User.FindFirstValue(ClaimIdentityTypes.UserId);
 
                 Guid userId;
                 if (!Guid.TryParse(userIdClaim, out userId))

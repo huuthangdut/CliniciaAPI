@@ -37,5 +37,10 @@ namespace Clinicia.Services.Implementations
         {
             return await _unitOfWork.ReviewRepository.GetDoctorReviewsAsync(id, page, pageSize);
         }
+
+        public DoctorCheckingService[] GetCheckingServices(Guid id)
+        {
+            return _unitOfWork.DoctorRepository.GetCheckingServices(id);
+        }
     }
 }

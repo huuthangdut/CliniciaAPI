@@ -4,8 +4,6 @@
     {
         public string DoctorId { get; set; }
 
-        public long WorkingDate { get; set; }
-
         public string[] WorkingTimes { get; set; }
     }
 }

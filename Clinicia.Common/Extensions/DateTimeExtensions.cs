@@ -247,9 +247,12 @@ namespace Clinicia.Common.Extensions
                 foreach (var timeRange in timeRangeOfDay)
                 {
                     var time = timeRange.Split('-');
-                    var timeFrom = time[0];
-                    var timeTo = time[1];
-                    timeRangeResult.Add(new TimeRange(timeFrom, timeTo));
+                    if (time.Length == 2)
+                    {
+                        var timeFrom = time[0];
+                        var timeTo = time[1];
+                        timeRangeResult.Add(new TimeRange(timeFrom, timeTo));
+                    }
                 }
 
                 return timeRangeResult.ToArray();

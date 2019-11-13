@@ -5,18 +5,16 @@ namespace Clinicia.WebApi.Models
     public class CreatedAppointmentModel
     {
         [Required]
-        public long AppointmentDate { get; set; }
+        public string AppointmentDate { get; set; }
 
         [Required]
-        public int DurationInMinutes { get; set; }
+        public int TotalMinutes { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
-
-        public string Description { get; set; }
+        public decimal TotalPrice { get; set; }
 
         [Required]
-        public int Type { get; set; }
+        public string CheckingServiceId { get; set; }
 
         [Required]
         public string DoctorId { get; set; }

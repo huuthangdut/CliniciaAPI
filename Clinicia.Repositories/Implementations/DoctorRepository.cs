@@ -31,6 +31,32 @@ namespace Clinicia.Repositories.Implementations
 
         public async Task<PagedResult<Doctor>> GetDoctorsAsync(int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
         {
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    Context.Doctors.Add(new DbDoctor
+            //    {
+            //        FirstName = RandomHelper.GetRandomString(5),
+            //        LastName = RandomHelper.GetRandomString(5),
+            //        UserName = RandomHelper.GetRandomString(10),
+            //        Email = RandomHelper.GetRandomString(10) + "@gmail.com",
+            //        EmailConfirmed = true,
+            //        PhoneNumber = RandomHelper.GetRandomString(10),
+            //        PhoneNumberConfirmed = true,
+            //        Gender = new Random().Next(1) % 1 == 0,
+            //        BirthDate = DateTime.UtcNow,
+            //        Price = 250000,
+            //        Clinic = RandomHelper.GetRandomString(10),
+            //        MedicalSchool = RandomHelper.GetRandomString(20),
+            //        Awards = RandomHelper.GetRandomString(20),
+            //        YearExperience = RandomHelper.GetRandom(1, 20),
+            //        SpecialtyId = RandomHelper.GetRandomOf(new Guid?[] { "27183883-f4c1-486f-9892-a619008ecd69".ParseGuid(), "5ca93936-161e-4f75-9e04-e55c8adba997".ParseGuid(), "8dfb4b83-5401-4eeb-8667-b9b80fc45c27".ParseGuid() }),
+            //        IsActive = true,
+            //        IsDelete = false
+            //    });
+            //    Context.SaveChanges();
+            //}
+
+            
             var query = Context.Doctors
                 .IncludeMultiple(x => x.Specialty, x => x.Location, x => x.Reviews)
                 .IncludeMultipleIf(
@@ -38,9 +64,10 @@ namespace Clinicia.Repositories.Implementations
                     x => x.Appointments, x => x.WorkingSchedules, x => x.NoAttendances)
                 .Where(x => x.IsActive)
                 .SearchByFields(filter.SearchTerm, x => x.FirstName, x => x.LastName, x => x.Clinic)
+                .WhereIf(filter.SpecialtyId.HasValue, x => x.SpecialtyId == filter.SpecialtyId)
                 .WhereIf(filter.Gender.HasValue, x => x.Gender == filter.Gender)
-                .WhereIf(filter.PriceFrom.HasValue, x => x.Price >= filter.PriceFrom)
-                .WhereIf(filter.PriceTo.HasValue, x => x.Price <= filter.PriceTo)
+                //.WhereIf(filter.PriceFrom.HasValue, x => x.Price >= filter.PriceFrom)
+                //.WhereIf(filter.PriceTo.HasValue, x => x.Price <= filter.PriceTo)
                 .WhereIf(filter.YearExperience.HasValue, GetCompareYearExperiencePredicate(filter.FilterYearExperienceSymbol, filter.YearExperience))
                 .Select(x => new DoctorProjection
                 {
@@ -53,12 +80,12 @@ namespace Clinicia.Repositories.Implementations
                     ImageProfile = x.ImageProfile,
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
-                    Price = x.Price,
+//                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
-                    Rating = (decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
+                    Rating = ((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive)) ?? 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
-                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude)
+//                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude)
                 });
 
             if(filter.AvailableToday.HasValue)
@@ -100,12 +127,12 @@ namespace Clinicia.Repositories.Implementations
                     ImageProfile = x.ImageProfile,
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
-                    Price = x.Price,
+//                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
-                    Rating = (decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive),
+                    Rating = ((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive)) ?? 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
-                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude),
+//                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude),
                     NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count() // Distinct here
                 })
                 .FirstOrDefaultAsync();
@@ -118,10 +145,15 @@ namespace Clinicia.Repositories.Implementations
             return _mapper.Map<DoctorDetails>(doctor);
         }
 
+        public DoctorCheckingService[] GetCheckingServices(Guid id)
+        {
+            return Context.CheckingServices
+                .Where(x => x.IsActive && x.DoctorId == id)
+                .ConvertArray(x => _mapper.Map<DoctorCheckingService>(x));
+        }
+
         public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date)
         {
-            date = date.Date;
-
             var doctorTime = await Context.Doctors
                 .IncludeMultiple(x => x.Appointments, x => x.WorkingSchedules, x => x.NoAttendances)
                 .Where(x => x.IsActive && x.Id == id)
@@ -132,12 +164,12 @@ namespace Clinicia.Repositories.Implementations
                         .Select(ws => ws.Hours.ToWorkingTimes(date.DayOfWeek))
                         .FirstOrDefault(),
                     TimeOffInDay = x.NoAttendances
-                        .Where(na => na.IsActive && date.IsBetween(na.FromDate, na.ToDate))
+                        .Where(na => na.IsActive && date.IsBetween(na.FromDate.Date, na.ToDate.Date))
                         .Select(na => TimeRangeUtils.GetTimeRange(na.FromDate, na.ToDate, date))
                         .ToArray(),
                     TimeBusyInDay = x.Appointments
                         .Where(a => a.IsActive && a.Status != (int)AppointmentStatus.Cancelled && a.DoctorId == id && a.AppointmentDate.Date == date.Date)
-                        .Select(a => new TimeRange(a.AppointmentDate.TimeOfDay, a.AppointmentDate.TimeOfDay.Add(TimeSpan.FromMinutes(a.DurationInMinutes))))
+                        .Select(a => new TimeRange(a.AppointmentDate.TimeOfDay, a.AppointmentDate.AddMinutes(a.TotalMinutes).TimeOfDay))
                         .ToArray()
                 })
                 .FirstOrDefaultAsync();
@@ -145,7 +177,6 @@ namespace Clinicia.Repositories.Implementations
             var result = new DoctorWorkingTime
             {
                 DoctorId = id,
-                WorkingDate = date,
                 WorkingTimes = doctorTime.WorkingHoursInDay
                     .ConvertArray(wh =>
                         TimeRangeUtils.GetTimeFrame(wh, doctorTime.TimeOffInDay, doctorTime.TimeBusyInDay))

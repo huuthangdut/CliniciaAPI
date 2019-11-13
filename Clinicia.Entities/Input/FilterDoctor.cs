@@ -1,9 +1,12 @@
-﻿using Clinicia.Common.Enums;
+﻿using System;
+using Clinicia.Common.Enums;
 
 namespace Clinicia.Dtos.Input
 {
     public class FilterDoctor
     {
+        public Guid? SpecialtyId { get; set; }
+
         public string SearchTerm { get; set; }
 
         public double PatientLongitude { get; set; }
