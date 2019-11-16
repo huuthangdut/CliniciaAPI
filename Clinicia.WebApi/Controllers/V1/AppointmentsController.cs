@@ -7,6 +7,7 @@ using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Models;
 using Clinicia.WebApi.Results;
 using System.Threading.Tasks;
+using Clinicia.Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,13 @@ namespace Clinicia.WebApi.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<IActionResult> Get(
+            [FromQuery] int page, 
+            [FromQuery] int pageSize,
+            [FromQuery] AppointmentStatus[] status
+            )
         {
-            var result = await _appointmentService.GetAppointmentsAsync(UserId, page, pageSize);
+            var result = await _appointmentService.GetAppointmentsAsync(UserId, page, pageSize, status);
 
             return Success(_mapper.Map<PagedResult<AppointmentResult>>(result));
         }

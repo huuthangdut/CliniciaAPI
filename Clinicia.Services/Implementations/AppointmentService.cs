@@ -22,9 +22,9 @@ namespace Clinicia.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize)
+        public async Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize, AppointmentStatus[] status)
         {
-            return await _unitOfWork.AppointmentRepository.GetAppointmentsAsync(userId, page, pageSize);
+            return await _unitOfWork.AppointmentRepository.GetAppointmentsAsync(userId, page, pageSize, status);
         }
 
         public async Task<Appointment> AddAppointmentAsync(Guid userId, CreatedAppointment model)

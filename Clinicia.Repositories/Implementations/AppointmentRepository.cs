@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Clinicia.Common.Enums;
+using Clinicia.Common.Extensions;
 
 namespace Clinicia.Repositories.Implementations
 {
@@ -22,13 +24,15 @@ namespace Clinicia.Repositories.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize)
+        public async Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize, AppointmentStatus[] status)
         {
             return await Context.Appointments
+                .Include(x => x.CheckingService)
                 .Include(x => x.Doctor)
                 .ThenInclude(d => d.Location)
                 .Where(x => x.PatientId == userId && x.IsActive)
-                .OrderByDescending(x => x.AppointmentDate)
+                .WhereIf(status.Length > 0, x => status.Select(s => (int)s).Contains(x.Status))
+                .OrderByElseDescending(status.Length > 0 && (status.Contains(AppointmentStatus.Confirming) || status.Contains(AppointmentStatus.Confirming)), x => x.AppointmentDate)
                 .GetPagedResultAsync(
                     page,
                     pageSize,

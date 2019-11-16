@@ -8,11 +8,9 @@ namespace Clinicia.Dtos.Output
 
         public DateTime AppointmentDate { get; set; }
 
-        public int DurationInMinutes { get; set; }
+        public int TotalMinutes { get; set; }
 
-        public decimal Price { get; set; }
-
-        public string Description { get; set; }
+        public decimal TotalPrice { get; set; }
 
         public string PublicResult { get; set; }
 
@@ -21,6 +19,8 @@ namespace Clinicia.Dtos.Output
         public int Status { get; set; }
 
         public AppointmentDoctor Doctor { get; set; }
+
+        public DoctorCheckingService CheckingService { get; set; }
     }
 
     public class AppointmentDoctor
@@ -28,6 +28,8 @@ namespace Clinicia.Dtos.Output
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public string ImageProfile { get; set; }
 
         public string Address { get; set; }
 

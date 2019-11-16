@@ -14,7 +14,7 @@ namespace Clinicia.WebApi.Mappings
         {
             CreateMap<Guid, string>().ConvertUsing(x => x.ToString());
             CreateMap<double, double>().ConvertUsing(x => Math.Round(x, 2));
-            CreateMap<DateTime, long>().ConvertUsing(x => x.ToSecondsTimestamp());
+            CreateMap<DateTime, long>().ConvertUsing(x => x.ToMilliSecondsTimestamp());
             CreateMap<TimeSpan, string>().ConvertUsing(x => x.ToString(@"hh\:mm"));
 
             CreateMap<Specialty, SpecialtyResult>();
@@ -47,7 +47,7 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<Appointment, AppointmentResult>()
                 .ForMember(
                     x => x.Price,
-                    opts => opts.MapFrom(x => x.Price.RoundTo(2))
+                    opts => opts.MapFrom(x => x.TotalPrice.RoundTo(2))
                     );
             CreateMap<PagedResult<Appointment>, PagedResult<AppointmentResult>>();
             CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();

@@ -6,7 +6,7 @@
 
         public long AppointmentDate { get; set; }
 
-        public int DurationInMinutes { get; set; }
+        public int TotalMinutes { get; set; }
 
         public decimal Price { get; set; }
 
@@ -19,6 +19,8 @@
         public int Status { get; set; }
 
         public AppointmentDoctorResult Doctor { get; set; }
+
+        public DoctorCheckingServiceResult CheckingService { get; set; }
     }
 
     public class AppointmentDoctorResult
@@ -26,6 +28,8 @@
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public string ImageProfile { get; set; }
 
         public string Address { get; set; }
 
