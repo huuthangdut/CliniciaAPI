@@ -39,7 +39,10 @@ namespace Clinicia.Infrastructure.ContainerConfigs
                 {
                     options.DefaultLanguage = appSettings[nameof(AppSettings.DefaultLanguage)];
                     options.LockoutTimeMinutes = appSettings[nameof(AppSettings.LockoutTimeMinutes)].ParseInt();
+                    options.AccessTokenLifeTimeHours = appSettings[nameof(AppSettings.AccessTokenLifeTimeHours)].ParseInt();
                     options.GoogleApiKey = appSettings[nameof(AppSettings.GoogleApiKey)];
+                    options.FCMServerKey = appSettings[nameof(AppSettings.FCMServerKey)];
+                    options.FCMSenderID = appSettings[nameof(AppSettings.FCMSenderID)];
                 });
 
             var tokenValidationParameters = new TokenValidationParameters

@@ -50,6 +50,8 @@ namespace Clinicia.Repositories
 
         public DbSet<DbCheckingService> CheckingServices { get; set; }
 
+        public DbSet<DbDeviceUser> DeviceUsers { get; set; }
+
         public CliniciaDbContext(DbContextOptions options, IAuditHelper auditHelper)
             : base(options)
         {

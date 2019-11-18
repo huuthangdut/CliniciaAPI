@@ -3,14 +3,16 @@ using System;
 using Clinicia.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinicia.Repositories.Migrations
 {
     [DbContext(typeof(CliniciaDbContext))]
-    partial class CliniciaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191116103456_AddDeviceTable")]
+    partial class AddDeviceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

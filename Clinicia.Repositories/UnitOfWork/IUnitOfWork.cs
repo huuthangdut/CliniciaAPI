@@ -19,6 +19,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         IPatientRepository PatientRepository { get; }
 
+        IDeviceRepository DeviceRepository { get; }
+
         int Complete();
 
         Task<int> CompleteAsync();

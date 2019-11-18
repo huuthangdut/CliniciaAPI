@@ -28,6 +28,8 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IDeviceService, DeviceService>();
+            services.AddTransient<IPushNotificationService, FcmService>();
         }
     }
 }

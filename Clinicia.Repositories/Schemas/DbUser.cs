@@ -42,5 +42,7 @@ namespace Clinicia.Repositories.Schemas
         public virtual DbLocation Location { get; set; }
 
         public virtual ICollection<DbUserRole> UserRoles { get; set; }
+
+        public virtual ICollection<DbDeviceUser> Devices { get; set; }
     }
 }
