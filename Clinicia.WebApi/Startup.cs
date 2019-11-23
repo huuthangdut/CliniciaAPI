@@ -2,10 +2,13 @@
 using Clinicia.Infrastructure.ContainerConfigs;
 using Clinicia.Services.Helpers;
 using Clinicia.WebApi.Mappings;
+using Clinicia.WebApi.Schedulings;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Clinicia.WebApi
 {
@@ -32,9 +35,12 @@ namespace Clinicia.WebApi
                 mc.AddProfile(new DtoToResultMappingProfile());
                 mc.AddProfile(new ModelToDtoMappingProfile());
             }).CreateMapper());
+
+            // Add Hangfire services
+            services.AddHangfire(Configuration.GetConnectionString("HangfireConnection"));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -45,9 +51,12 @@ namespace Clinicia.WebApi
                 app.UseHsts();
             }
 
+            GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(serviceProvider));
+
             app.UseCors();
             app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseHangfire();
             app.UseMvc();
         }
     }

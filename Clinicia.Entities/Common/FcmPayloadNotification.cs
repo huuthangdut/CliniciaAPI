@@ -24,5 +24,11 @@ namespace Clinicia.Dtos.Common
     {
         [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("image")]
+        public string Image { get; set; }
+
+        [JsonProperty("notificationDate")]
+        public string NotificationDate { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
+using Clinicia.Common.Extensions;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Helpers.Linq;
@@ -52,6 +53,34 @@ namespace Clinicia.Repositories.Implementations
             }
 
             return _mapper.Map<Appointment>(appointment);
+        }
+
+        public async Task<ReminderAppointment[]> GetReminderAppointments()
+        {
+            return await Context.Appointments
+                .Include(x => x.Doctor)
+                .Include(x => x.Patient)
+                    .ThenInclude(x => x.Devices)
+                .Where(x => 
+                    x.Patient.PushNotificationEnabled &&
+                    x.Status == (int)AppointmentStatus.Confirmed && 
+                    (DateTime.Now - x.AppointmentDate).Minutes == x.SendNotificationBeforeMinutes &&
+                    x.Patient.Devices.Any(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow))
+                .Select(x => new ReminderAppointment
+                {
+                    UserId = x.PatientId,
+                    DoctorName = $"{x.Doctor.FirstName} {x.Doctor.LastName}",
+                    DoctorImage = x.Doctor.ImageProfile,
+                    AppointmentDate = x.AppointmentDate,
+                    Devices = x.Patient.Devices
+                        .Where(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow)
+                        .ConvertArray(device => new Device
+                        {
+                            Id = device.Id,
+                            DeviceType = device.DeviceType,
+                            DeviceToken = device.DeviceToken
+                        })
+                }).ToArrayAsync();
         }
     }
 }

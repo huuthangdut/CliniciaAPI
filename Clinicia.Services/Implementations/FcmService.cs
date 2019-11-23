@@ -16,7 +16,7 @@ namespace Clinicia.Services.Implementations
             _appSettings = appSettings.Value;
         }
 
-        public async Task Send(string deviceToken, FcmPayloadNotification payload)
+        public async Task SendAsync(string deviceToken, FcmPayloadNotification payload)
         {
             using (var apn = new FcmSender(_appSettings.FCMServerKey, _appSettings.FCMSenderID))
             {

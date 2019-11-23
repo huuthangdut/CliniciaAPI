@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Helpers.Linq;
 using Clinicia.Repositories.Interfaces;
 using Clinicia.Repositories.Schemas;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Clinicia.Repositories.Implementations
 {

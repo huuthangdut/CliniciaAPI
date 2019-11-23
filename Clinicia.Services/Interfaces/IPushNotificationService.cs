@@ -5,6 +5,6 @@ namespace Clinicia.Services.Interfaces
 {
     public interface IPushNotificationService
     {
-        Task Send(string deviceToken, FcmPayloadNotification payload);
+        Task SendAsync(string deviceToken, FcmPayloadNotification payload);
     }
 }
