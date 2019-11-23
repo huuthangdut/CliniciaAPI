@@ -51,6 +51,9 @@ namespace Clinicia.WebApi.Mappings
                     );
             CreateMap<PagedResult<Appointment>, PagedResult<AppointmentResult>>();
             CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();
+
+            CreateMap<PagedResult<Notification>, PagedResult<NotificationResult>>();
+            CreateMap<Notification, NotificationResult>();
         }
     }
 }

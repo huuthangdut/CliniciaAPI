@@ -52,6 +52,8 @@ namespace Clinicia.Repositories
 
         public DbSet<DbDeviceUser> DeviceUsers { get; set; }
 
+        public DbSet<DbNotification> Notifications { get; set; }
+
         public CliniciaDbContext(DbContextOptions options, IAuditHelper auditHelper)
             : base(options)
         {

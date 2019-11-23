@@ -30,6 +30,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IDeviceService, DeviceService>();
             services.AddTransient<IPushNotificationService, FcmService>();
+            services.AddTransient<INotificationService, NotificationService>();
         }
     }
 }

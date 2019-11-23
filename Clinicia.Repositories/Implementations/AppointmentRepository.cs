@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
@@ -9,8 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Clinicia.Common.Enums;
-using Clinicia.Common.Extensions;
 
 namespace Clinicia.Repositories.Implementations
 {

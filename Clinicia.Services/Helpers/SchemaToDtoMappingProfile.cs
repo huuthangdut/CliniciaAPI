@@ -45,6 +45,8 @@ namespace Clinicia.Services.Helpers
 
             CreateMap<DbCheckingService, DoctorCheckingService>()
                 .ForMember(x => x.Price, opts => opts.MapFrom(x => x.Price.RoundTo(2)));
+
+            CreateMap<DbNotification, Notification>();
         }
     }
 }
