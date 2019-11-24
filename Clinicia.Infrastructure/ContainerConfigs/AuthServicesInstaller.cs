@@ -43,6 +43,9 @@ namespace Clinicia.Infrastructure.ContainerConfigs
                     options.GoogleApiKey = appSettings[nameof(AppSettings.GoogleApiKey)];
                     options.FCMServerKey = appSettings[nameof(AppSettings.FCMServerKey)];
                     options.FCMSenderID = appSettings[nameof(AppSettings.FCMSenderID)];
+                    options.TwilioSid = appSettings[nameof(AppSettings.TwilioSid)];
+                    options.TwilioAuthToken = appSettings[nameof(AppSettings.TwilioAuthToken)];
+                    options.TwilioPhoneFrom = appSettings[nameof(AppSettings.TwilioPhoneFrom)];
                 });
 
             var tokenValidationParameters = new TokenValidationParameters

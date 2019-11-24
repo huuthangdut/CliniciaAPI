@@ -1,4 +1,5 @@
-﻿using Clinicia.Common.Enums;
+﻿using AutoMapper;
+using Clinicia.Common.Enums;
 using Clinicia.Common.Runtime.Security;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Schemas;
@@ -20,16 +21,24 @@ namespace Clinicia.Services.Implementations
 
         private readonly UserManager<DbUser> _userManager;
 
+        private readonly ITwoFactorAuthenticationService _twoFactorAuthenticationService;
+
+        private readonly IMapper _mapper;
+
         private JwtIssuerOptions _jwtIssuerOptions;
 
         public LoginService(
             SignInManager<DbUser> signInManager,
             UserManager<DbUser> userManager,
+            ITwoFactorAuthenticationService twoFactorAuthenticationService,
+            IMapper mapper,
             IOptions<JwtIssuerOptions> jwtIssuerOptions,
             IUnitOfWork unitOfWork)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _twoFactorAuthenticationService = twoFactorAuthenticationService;
+            _mapper = mapper;
             _jwtIssuerOptions = jwtIssuerOptions.Value;
         }
 
@@ -59,21 +68,39 @@ namespace Clinicia.Services.Implementations
                 return new LoginResult(LoginResultType.InvalidUserNameOrPassword);
             }
 
+            if(!user.PhoneNumberConfirmed)
+            {
+                return new LoginResult(LoginResultType.RequireConfirmedPhoneNumber);
+            }
+
             var roles = await _userManager.GetRolesAsync(user);
-            var claimIdentity = GenerateClaimsIdentity(user, roles.Join(","));
+
+            var userInfo = _mapper.Map<Dtos.Output.UserLoginInfo>(user);
+            userInfo.Roles = roles.Join(",");
+
+            var claimIdentity = GenerateClaimsIdentity(userInfo);
 
             return new LoginResult(claimIdentity);
         }
 
-        private ClaimsIdentity GenerateClaimsIdentity(DbUser user, string role)
+        public async Task<LoginResult> LoginMobileWithTwoFactorAsync(string code, string token)
+        {
+            var userInfo = await _twoFactorAuthenticationService.VerifyAccountAsync(code, token);
+
+            var claimIdentity = GenerateClaimsIdentity(userInfo);
+
+            return new LoginResult(claimIdentity);
+        }
+
+        private ClaimsIdentity GenerateClaimsIdentity(Dtos.Output.UserLoginInfo user)
         {
             var userClaims = new List<Claim>
             {
                 new Claim(ClaimIdentityTypes.UserId, user.Id.ToString()),
                 new Claim(ClaimIdentityTypes.UserName, user.UserName),
+                new Claim(ClaimIdentityTypes.Email, user.Email),
                 new Claim(ClaimIdentityTypes.FirstName, user.FirstName),
                 new Claim(ClaimIdentityTypes.LastName, user.LastName),
-                new Claim(ClaimIdentityTypes.Email, user.Email),
                 new Claim(ClaimIdentityTypes.PhoneNumber, user.PhoneNumber)
             };
 
@@ -82,9 +109,9 @@ namespace Clinicia.Services.Implementations
                 userClaims.Add(new Claim(ClaimIdentityTypes.ImageProfile, user.ImageProfile));
             }
 
-            if(!string.IsNullOrEmpty(role))
+            if(!string.IsNullOrEmpty(user.Roles))
             {
-                userClaims.Add(new Claim(ClaimIdentityTypes.Role, role));
+                userClaims.Add(new Claim(ClaimIdentityTypes.Role, user.Roles));
             }
 
             return new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"), userClaims);

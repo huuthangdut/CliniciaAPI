@@ -5,6 +5,6 @@ namespace Clinicia.Services.Interfaces
 {
     public interface IRegisterService
     {
-        Task RegisterAccountAsync(AccountRegister accountRegister);
+        Task<string> RegisterAccountAsync(AccountRegister accountRegister);
     }
 }

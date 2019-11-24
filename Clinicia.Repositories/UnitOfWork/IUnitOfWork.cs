@@ -9,6 +9,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         ISpecialtyRepository SpecialtyRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
         IDoctorRepository DoctorRepository { get; }
 
         IReviewRepository ReviewRepository { get; }

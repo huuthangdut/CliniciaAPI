@@ -9,6 +9,7 @@
         UserLoginInvalidUserNameOrPassword,
         UserLoginIsNotActive,
         UserLockedOut,
-        IdentityError
+        IdentityError,
+        RequireConfirmedPhoneNumber
     }
 }

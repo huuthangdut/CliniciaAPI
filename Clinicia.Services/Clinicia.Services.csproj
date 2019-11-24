@@ -9,6 +9,7 @@
     <PackageReference Include="CorePush" Version="2.0.1" />
     <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
+    <PackageReference Include="Twilio" Version="5.35.1" />
   </ItemGroup>
 
   <ItemGroup>

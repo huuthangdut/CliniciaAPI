@@ -5,6 +5,7 @@
         Success = 1,
         InvalidUserNameOrPassword,
         UserIsNotActive,
-        UserLockedOut
+        UserLockedOut,
+        RequireConfirmedPhoneNumber
     }
 }

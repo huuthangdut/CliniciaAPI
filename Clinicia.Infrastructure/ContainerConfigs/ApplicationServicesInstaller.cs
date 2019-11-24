@@ -19,6 +19,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ITwoFactorAuthenticationService, TwoFactorAuthenticationService>();
             services.AddTransient<ITokenService, JwtTokenService>();
             services.AddTransient<IRegisterService, RegisterService>();
             services.AddTransient<ISpecialtyService, SpecialtyService>();
@@ -31,6 +32,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<IDeviceService, DeviceService>();
             services.AddTransient<IPushNotificationService, FcmService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<ISmsService, TwilioService>();
         }
     }
 }

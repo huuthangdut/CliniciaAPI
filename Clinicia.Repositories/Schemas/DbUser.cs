@@ -24,6 +24,13 @@ namespace Clinicia.Repositories.Schemas
 
         public Guid? LocationId { get; set; }
 
+        [StringLength(6)]
+        public string OtpCode { get; set; }
+
+        public string OtpToken { get; set; }
+
+        public DateTime? OtpExpiredAt { get; set; }
+
         public DateTime? CreatedDate { get; set; }
 
         [StringLength(50)]

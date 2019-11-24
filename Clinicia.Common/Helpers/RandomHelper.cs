@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Clinicia.Common.Extensions;
 
 namespace Clinicia.Common.Helpers
@@ -107,5 +108,16 @@ namespace Clinicia.Common.Helpers
             }
         }
 
+        public static string GetRandomNumber(int length)
+        {
+            Random generator = new Random();
+            var r = generator.Next(0, 1000000).ToString("D6");
+            if (r.Distinct().Count() == 1)
+            {
+                r = GetRandomNumber(length);
+            }
+
+            return r;
+        }
     }
 }

@@ -14,20 +14,24 @@ namespace Clinicia.Services.Implementations
     {
         private readonly UserManager<DbPatient> _userManager;
 
-        public RegisterService(UserManager<DbPatient> userManager)
+        private readonly ITwoFactorAuthenticationService _twoFactorAuthenticationService;
+
+        public RegisterService(UserManager<DbPatient> userManager, ITwoFactorAuthenticationService twoFactorAuthenticationService)
         {
             _userManager = userManager;
+            _twoFactorAuthenticationService = twoFactorAuthenticationService;
         }
 
-        public async Task RegisterAccountAsync(AccountRegister accountRegister)
+        public async Task<string> RegisterAccountAsync(AccountRegister accountRegister)
         {
             var user = new DbPatient
             {
                 FirstName = accountRegister.FirstName,
                 LastName = accountRegister.LastName,
+                UserName = accountRegister.PhoneNumber,
                 Email = accountRegister.Email,
-                UserName = accountRegister.Email,
                 PhoneNumber = accountRegister.PhoneNumber,
+                PhoneNumberConfirmed = false
             };
 
             var result = await _userManager.CreateAsync(user, accountRegister.Password);
@@ -37,6 +41,10 @@ namespace Clinicia.Services.Implementations
             }
 
             await _userManager.AddToRoleAsync(user, IdentityRoles.Patient);
+
+            var verifiedToken = await _twoFactorAuthenticationService.RequestVerifiedTokenAsync(user.PhoneNumber);
+
+            return verifiedToken;
         }
     }
 }
