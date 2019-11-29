@@ -75,7 +75,7 @@ namespace Clinicia.WebApi.Controllers.V1
             return Success(new TokenResult { Token = verifiedToken });
         }
 
-        [HttpPost("login2fa")]
+        [HttpPost("verify2fa")]
         public async Task<IActionResult> LoginWithTwoFactorAuthentication([FromBody] VerifiedTwoFactorModel model)
         {
             var loginResult = await _loginService.LoginMobileWithTwoFactorAsync(model.Code, model.Token);
