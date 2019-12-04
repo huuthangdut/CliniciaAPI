@@ -50,7 +50,7 @@ namespace Clinicia.Services.Implementations
         public void UpdateStatus(Guid userId, string deviceUuid, bool status)
         {
             var device = _unitOfWork.DeviceRepository.GetFirstOrDefault(x => x.DeviceUuid == deviceUuid && x.UserId == userId);
-            if(device.IsActive != status)
+            if(device != null && device.IsActive != status)
             {
                 device.IsActive = status;
 

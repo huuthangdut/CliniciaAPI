@@ -18,6 +18,8 @@
 
         public int Status { get; set; }
 
+        public int SendNotificationBeforeMinutes { get; set; }
+
         public AppointmentDoctorResult Doctor { get; set; }
 
         public DoctorCheckingServiceResult CheckingService { get; set; }

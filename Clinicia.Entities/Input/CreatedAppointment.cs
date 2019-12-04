@@ -13,5 +13,7 @@ namespace Clinicia.Dtos.Input
         public Guid CheckingServiceId { get; set; }
 
         public Guid DoctorId { get; set; }
+
+        public int SendNotificationBeforeMinutes { get; set; }
     }
 }

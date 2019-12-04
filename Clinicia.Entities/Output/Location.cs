@@ -1,4 +1,6 @@
-﻿namespace Clinicia.Dtos.Output
+﻿using Newtonsoft.Json;
+
+namespace Clinicia.Dtos.Output
 {
     public class Location
     {

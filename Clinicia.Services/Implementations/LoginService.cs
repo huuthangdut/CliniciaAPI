@@ -8,6 +8,7 @@ using Clinicia.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -27,6 +28,8 @@ namespace Clinicia.Services.Implementations
 
         private JwtIssuerOptions _jwtIssuerOptions;
 
+        private readonly IUnitOfWork _unitOfWork;
+
         public LoginService(
             SignInManager<DbUser> signInManager,
             UserManager<DbUser> userManager,
@@ -40,6 +43,7 @@ namespace Clinicia.Services.Implementations
             _twoFactorAuthenticationService = twoFactorAuthenticationService;
             _mapper = mapper;
             _jwtIssuerOptions = jwtIssuerOptions.Value;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<LoginResult> LoginMobileAsync(string username, string password)
@@ -74,9 +78,13 @@ namespace Clinicia.Services.Implementations
             }
 
             var roles = await _userManager.GetRolesAsync(user);
+            var dbUser = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.UserName == username, x => x.Location);
 
             var userInfo = _mapper.Map<Dtos.Output.UserLoginInfo>(user);
             userInfo.Roles = roles.Join(",");
+            userInfo.Latitude = dbUser.Location.Latitude;
+            userInfo.Longitude = dbUser.Location.Longitude;
+            userInfo.Address = dbUser.Location.FormattedAddress;
 
             var claimIdentity = GenerateClaimsIdentity(userInfo);
 
@@ -101,7 +109,10 @@ namespace Clinicia.Services.Implementations
                 new Claim(ClaimIdentityTypes.Email, user.Email),
                 new Claim(ClaimIdentityTypes.FirstName, user.FirstName),
                 new Claim(ClaimIdentityTypes.LastName, user.LastName),
-                new Claim(ClaimIdentityTypes.PhoneNumber, user.PhoneNumber)
+                new Claim(ClaimIdentityTypes.PhoneNumber, user.PhoneNumber),
+                new Claim(ClaimIdentityTypes.Latitude, user.Latitude.ToString()),
+                new Claim(ClaimIdentityTypes.Longitude, user.Longitude.ToString()),
+                new Claim(ClaimIdentityTypes.Address, user.Address)
             };
 
             if(!string.IsNullOrEmpty(user.ImageProfile))

@@ -11,9 +11,9 @@ namespace Clinicia.Repositories.Schemas
         [Key]
         public Guid Id { get; set; }
 
-        public double Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
-        public double Latitude { get; set; }
+        public decimal Latitude { get; set; }
 
         public string FormattedAddress { get; set; }
     }

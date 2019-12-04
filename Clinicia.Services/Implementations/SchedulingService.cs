@@ -24,7 +24,7 @@ namespace Clinicia.Services.Implementations
             try
             {
                 var reminderAppointments = await _unitOfWork.AppointmentRepository.GetReminderAppointments();
-                if(reminderAppointments.Length > 0)
+                if (reminderAppointments.Length > 0)
                 {
                     var notifications = reminderAppointments.ConvertArray(x => new DbNotificationProjection
                     {

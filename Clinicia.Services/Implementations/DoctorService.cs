@@ -18,14 +18,14 @@ namespace Clinicia.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PagedResult<Doctor>> GetDoctorsAsync(int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
+        public async Task<PagedResult<Doctor>> GetDoctorsAsync(Guid userId, int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
         {
-            return await _unitOfWork.DoctorRepository.GetDoctorsAsync(page, pageSize, filter, sortOptions);
+            return await _unitOfWork.DoctorRepository.GetDoctorsAsync(userId, page, pageSize, filter, sortOptions);
         }
 
-        public async Task<DoctorDetails> GetAsync(Guid id)
+        public async Task<DoctorDetails> GetAsync(Guid userId, Guid doctorId)
         {
-            return await _unitOfWork.DoctorRepository.GetDoctorAsync(id);
+            return await _unitOfWork.DoctorRepository.GetDoctorAsync(userId, doctorId);
         }
 
         public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date)

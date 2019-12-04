@@ -4,5 +4,6 @@ namespace Clinicia.Repositories.Interfaces
 {
     public interface IPatientRepository: IGenericRepository<DbPatient>
     {
+        void SeedData();
     }
 }

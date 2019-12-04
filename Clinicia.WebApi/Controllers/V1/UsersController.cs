@@ -8,23 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Clinicia.WebApi.Controllers.V1
 {
-    public class PatientsController : BaseApiController
+    public class UsersController : BaseApiController
     {
-        private readonly IPatientService _patientService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public PatientsController(IPatientService patientService, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper)
         {
-            _patientService = patientService;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpPost("location")]
         public async Task<IActionResult> Location([FromBody] UserLocationModel model)
         {
-            await _patientService.SetLocationAsync(UserId, _mapper.Map<UserLocation>(model));
+            var jwtToken = await _userService.SetLocationAsync(UserId, _mapper.Map<UserLocation>(model));
 
-            return Success();
+            return Success(jwtToken);
         }
 
     }

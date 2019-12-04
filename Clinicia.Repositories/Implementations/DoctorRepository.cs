@@ -29,7 +29,7 @@ namespace Clinicia.Repositories.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<Doctor>> GetDoctorsAsync(int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
+        public async Task<PagedResult<Doctor>> GetDoctorsAsync(Guid userId, int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
         {
             //for (int i = 0; i < 50; i++)
             //{
@@ -55,7 +55,7 @@ namespace Clinicia.Repositories.Implementations
             //    });
             //    Context.SaveChanges();
             //}
-
+            var user = await Context.Patients.Include(x => x.Location).FirstOrDefaultAsync(x => x.Id == userId) ?? throw new EntityNotFoundException();
             
             var query = Context.Doctors
                 .IncludeMultiple(x => x.Specialty, x => x.Location, x => x.Reviews)
@@ -80,12 +80,13 @@ namespace Clinicia.Repositories.Implementations
                     ImageProfile = x.ImageProfile,
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
+                    About = x.About,
 //                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
-                    Rating = ((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive)) ?? 0,
+                    Rating = x.Reviews.Any() ? (((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive))) : 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
-//                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude)
+                    DistanceFromPatient = LocationHelper.GetDistance(user.Location.Latitude, user.Location.Longitude, x.Location.Latitude, x.Location.Longitude) / 1000
                 });
 
             if(filter.AvailableToday.HasValue)
@@ -111,11 +112,13 @@ namespace Clinicia.Repositories.Implementations
             return await query.GetPagedResultAsync(page, pageSize, x => _mapper.Map<Doctor>(x));
         }
 
-        public async Task<DoctorDetails> GetDoctorAsync(Guid id)
+        public async Task<DoctorDetails> GetDoctorAsync(Guid userId, Guid doctorId)
         {
+            var user = await Context.Patients.Include(x => x.Location).FirstOrDefaultAsync(x => x.Id == userId) ?? throw new EntityNotFoundException();
+
             var doctor = await Context.Doctors
                 .IncludeMultiple(x => x.Specialty, x => x.Reviews, x => x.Location, x => x.Appointments)
-                .Where(x => x.Id == id && x.IsActive)
+                .Where(x => x.Id == doctorId && x.IsActive)
                 .Select(x => new DoctorDetailsProjection
                 {
                     Id = x.Id,
@@ -127,19 +130,20 @@ namespace Clinicia.Repositories.Implementations
                     ImageProfile = x.ImageProfile,
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
+                    About = x.About,
 //                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
                     Rating = ((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive)) ?? 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
-//                    DistanceFromPatient = LocationHelper.GetDistance(16, 18, x.Location.Latitude, x.Location.Longitude),
+                    DistanceFromPatient = LocationHelper.GetDistance(user.Location.Latitude, user.Location.Longitude, x.Location.Latitude, x.Location.Longitude) / 1000,
                     NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count() // Distinct here
                 })
                 .FirstOrDefaultAsync();
 
             if (doctor == null)
             {
-                throw new EntityNotFoundException(typeof(DbDoctor), id);
+                throw new EntityNotFoundException(typeof(DbDoctor), doctorId);
             }
 
             return _mapper.Map<DoctorDetails>(doctor);

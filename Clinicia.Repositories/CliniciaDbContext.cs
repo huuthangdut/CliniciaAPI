@@ -82,6 +82,10 @@ namespace Clinicia.Repositories
                     .IsRequired();
             });
 
+            modelBuilder.Entity<DbPatient>()
+                .Property(e => e.PushNotificationEnabled)
+                .HasDefaultValue(true);
+
             modelBuilder.Entity<DbRole>(b =>
             {
                 b.ToTable("Roles");

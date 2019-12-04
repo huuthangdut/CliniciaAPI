@@ -57,6 +57,21 @@ namespace Clinicia.Repositories.Implementations
             return await Table.FirstOrDefaultAsync(predicate);
         }
 
+        public async Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors)
+        {
+            var query = Table.AsQueryable();
+
+            if (!propertySelectors.IsNullOrEmpty())
+            {
+                foreach (var propertySelector in propertySelectors)
+                {
+                    query = query.Include(propertySelector);
+                }
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
         public TEntity Get(Guid id)
         {
             var entity = Table.FirstOrDefault(x => x.Id == id);

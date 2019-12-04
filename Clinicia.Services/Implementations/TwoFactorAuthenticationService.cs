@@ -54,7 +54,7 @@ namespace Clinicia.Services.Implementations
 
         public async Task<Dtos.Output.UserLoginInfo> VerifyAccountAsync(string otpCode, string token)
         {
-            var user = await _unitOfWork.PatientRepository.GetFirstOrDefaultAsync(x => x.OtpCode == otpCode && x.OtpToken == token && x.OtpExpiredAt > DateTime.UtcNow);
+            var user = await _unitOfWork.PatientRepository.GetFirstOrDefaultAsync(x => x.OtpCode == otpCode && x.OtpToken == token && x.OtpExpiredAt > DateTime.UtcNow, x => x.Location);
             if(user == null)
             {
                 throw new BusinessException(ErrorCodes.Failed.ToString(), "Cannot verify account.");
@@ -71,6 +71,9 @@ namespace Clinicia.Services.Implementations
 
             var userInfo = _mapper.Map<Dtos.Output.UserLoginInfo>(user);
             userInfo.Roles = roles.Join(",");
+            userInfo.Latitude = user.Location.Latitude;
+            userInfo.Longitude = user.Location.Longitude;
+            userInfo.Address = user.Location.FormattedAddress;
 
             return userInfo;
         }

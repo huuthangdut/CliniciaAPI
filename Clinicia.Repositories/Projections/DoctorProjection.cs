@@ -17,6 +17,8 @@ namespace Clinicia.Repositories.Projections
 
         public string Awards { get; set; }
 
+        public string About { get; set; }
+
         public string ImageProfile { get; set; }
 
         public string MedicalSchool { get; set; }
@@ -33,7 +35,7 @@ namespace Clinicia.Repositories.Projections
 
         public int? RatingCount { get; set; }
 
-        public double DistanceFromPatient { get; set; }
+        public decimal? DistanceFromPatient { get; set; }
 
         public bool? AvailableToday { get; set; }
     }

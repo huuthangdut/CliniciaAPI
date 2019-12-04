@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Clinicia.Repositories.Interfaces;
 using Clinicia.Repositories.Schemas;
+using Microsoft.AspNetCore.Identity;
 
 namespace Clinicia.Repositories.Implementations
 {
@@ -12,6 +14,13 @@ namespace Clinicia.Repositories.Implementations
             : base(context)
         {
             _mapper = mapper;
+
+            SeedData();
+        }
+
+        private void SeedData()
+        {
+            
         }
     }
 }

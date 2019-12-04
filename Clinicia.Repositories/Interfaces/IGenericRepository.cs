@@ -18,6 +18,8 @@ namespace Clinicia.Repositories.Interfaces
 
         Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
+        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
+
         TEntity Get(Guid id);
 
         Task<TEntity> GetAsync(Guid id);

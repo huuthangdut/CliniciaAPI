@@ -18,5 +18,8 @@ namespace Clinicia.WebApi.Models
 
         [Required]
         public string DoctorId { get; set; }
+
+        [Required]
+        public int SendNotificationBeforeMinutes { get; set; }
     }
 }

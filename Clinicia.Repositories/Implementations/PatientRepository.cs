@@ -13,5 +13,82 @@ namespace Clinicia.Repositories.Implementations
         {
             _mapper = mapper;
         }
+
+        public void SeedData()
+        {
+            Context.Specialties.AddRange(
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/heart-rating-128.png",
+                    Name = "Dentist"
+                },
+                new DbSpecialty
+                {
+                    Image = "https://cdn2.iconfinder.com/data/icons/medical-collection-1/48/chemistry-128.png",
+                    Name = "Dentist"
+                }
+                );
+
+        }
     }
 }

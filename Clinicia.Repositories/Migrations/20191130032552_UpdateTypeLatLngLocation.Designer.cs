@@ -3,14 +3,16 @@ using System;
 using Clinicia.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinicia.Repositories.Migrations
 {
     [DbContext(typeof(CliniciaDbContext))]
-    partial class CliniciaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191130032552_UpdateTypeLatLngLocation")]
+    partial class UpdateTypeLatLngLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -574,8 +576,6 @@ namespace Clinicia.Repositories.Migrations
                 {
                     b.HasBaseType("Clinicia.Repositories.Schemas.DbUser");
 
-                    b.Property<string>("About");
-
                     b.Property<string>("Awards");
 
                     b.Property<string>("Clinic")
@@ -599,9 +599,7 @@ namespace Clinicia.Repositories.Migrations
                 {
                     b.HasBaseType("Clinicia.Repositories.Schemas.DbUser");
 
-                    b.Property<bool>("PushNotificationEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("PushNotificationEnabled");
 
                     b.Property<int>("UnseenNotificationCount");
 

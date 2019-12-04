@@ -17,6 +17,8 @@ namespace Clinicia.Repositories.Schemas
 
         public string Awards { get; set; }
 
+        public string About { get; set; }
+
         public int? YearExperience { get; set; }
 
         public Guid? SpecialtyId { get; set; }

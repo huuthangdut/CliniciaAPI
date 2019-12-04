@@ -18,4 +18,6 @@
     <ProjectReference Include="..\Clinicia.Infrastructure\Clinicia.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="http://json.schemastore.org/apple-app-site-association" /></VisualStudio></ProjectExtensions>
+
 </Project>

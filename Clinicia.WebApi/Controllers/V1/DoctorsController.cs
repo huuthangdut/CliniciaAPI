@@ -8,6 +8,7 @@ using Clinicia.Infrastructure.ApiControllers;
 using Clinicia.Services.Interfaces;
 using Clinicia.WebApi.Models;
 using Clinicia.WebApi.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace Clinicia.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
+    [Authorize]
     public class DoctorsController : BaseApiController
     {
         private readonly IDoctorService _doctorService;
@@ -37,7 +39,7 @@ namespace Clinicia.WebApi.Controllers.V1
             var filter = _mapper.Map<FilterDoctor>(filterParams);
             var sortOptions = sort.ToSortOptions<SortDoctorField>();
 
-            var result = await _doctorService.GetDoctorsAsync(page, pageSize, filter, sortOptions);
+            var result = await _doctorService.GetDoctorsAsync(UserId, page, pageSize, filter, sortOptions);
 
             return Success(_mapper.Map<PagedResult<DoctorResult>>(result));
         }
@@ -45,7 +47,7 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] string id)
         {
-            var result = await _doctorService.GetAsync(id.ParseGuid());
+            var result = await _doctorService.GetAsync(UserId, id.ParseGuid());
 
             return Success(_mapper.Map<DoctorDetailsResult>(result));
         }

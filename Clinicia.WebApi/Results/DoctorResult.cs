@@ -21,6 +21,8 @@ namespace Clinicia.WebApi.Results
 
         public string Awards { get; set; }
 
+        public string About { get; set; }
+
         public int? YearExperience { get; set; }
 
         public string Clinic { get; set; }

@@ -10,5 +10,8 @@
         public const string Email = "email";
         public const string PhoneNumber = "phone_number";
         public const string ImageProfile = "image_profile";
+        public const string Latitude = "latitude";
+        public const string Longitude = "longitude";
+        public const string Address = "address";
     }
 }
