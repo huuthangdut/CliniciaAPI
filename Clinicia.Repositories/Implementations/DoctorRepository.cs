@@ -156,7 +156,7 @@ namespace Clinicia.Repositories.Implementations
                 .ConvertArray(x => _mapper.Map<DoctorCheckingService>(x));
         }
 
-        public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date)
+        public async Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date, FilterWorktime filter)
         {
             var doctorTime = await Context.Doctors
                 .IncludeMultiple(x => x.Appointments, x => x.WorkingSchedules, x => x.NoAttendances)
@@ -183,10 +183,15 @@ namespace Clinicia.Repositories.Implementations
                 DoctorId = id,
                 WorkingTimes = doctorTime.WorkingHoursInDay
                     .ConvertArray(wh =>
-                        TimeRangeUtils.GetTimeFrame(wh, doctorTime.TimeOffInDay, doctorTime.TimeBusyInDay))
+                        TimeRangeUtils.GetTimeFrame(wh, doctorTime.TimeOffInDay, doctorTime.TimeBusyInDay, new TimeRange(filter.TimeFrom ?? new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59))))
                     .ToSingleArray()
             };
 
+            if(filter.ServiceDuration.GetValueOrDefault() > 0)
+            {
+                result.WorkingTimes = result.WorkingTimes.Where(worktime => TimeRangeUtils.IsServiceTime(worktime, filter.ServiceDuration.Value, result.WorkingTimes)).ToArray();
+            }
+            
             return result;
         }
 

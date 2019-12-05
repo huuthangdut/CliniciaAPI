@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Clinicia.Common.Exceptions;
+using Clinicia.Common.Extensions;
 using Newtonsoft.Json;
 
 namespace Clinicia.Common.Helpers
@@ -46,6 +47,30 @@ namespace Clinicia.Common.Helpers
             if (!string.IsNullOrWhiteSpace(value) && int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out result))
             {
                 return result;
+            }
+
+            throw new InvalidArgumentException();
+        }
+
+        public static TimeSpan ParseTimespan(this string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value) && TimeSpan.TryParse(value, out var result))
+            {
+                return result;
+            }
+
+            throw new InvalidArgumentException();
+        }
+
+        public static TimeSpan? ParseNullTimespan(this string value, int roundMinute = 30)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+            if (TimeSpan.TryParse(value, out var result))
+            {
+                return new DateTime(result.Ticks).RoundUp(TimeSpan.FromMinutes(roundMinute)).TimeOfDay;
             }
 
             throw new InvalidArgumentException();
@@ -178,6 +203,17 @@ namespace Clinicia.Common.Helpers
             throw new InvalidArgumentException();
         }
 
+        public static DateTime ToDateTime(this string value, string format = "yyyyMMddHHmm")
+        {
+            var canConvert = DateTime.TryParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result);
+            if (!canConvert)
+            {
+                throw new InvalidArgumentException();
+            }
+
+            return result;
+        }
+
         public static DateTime ParseDate(this string value, string dateFormat)
         {
             var result = value.TryParseDate(dateFormat);
@@ -187,6 +223,28 @@ namespace Clinicia.Common.Helpers
             }
 
             throw new InvalidArgumentException();
+        }
+
+        public static DateTime ParseLocalDate(this string value, string dateFormat)
+        {
+            var result = value.TryParseLocalDate(dateFormat);
+            if (result.HasValue)
+            {
+                return result.Value;
+            }
+
+            throw new InvalidArgumentException();
+        }
+
+        public static DateTime? TryParseLocalDate(this string value, string dateFormat)
+        {
+            DateTime result;
+            if (!string.IsNullOrWhiteSpace(value) && DateTime.TryParseExact(value, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
         public static DateTime? TryParseDate(this string value, string dateFormat)

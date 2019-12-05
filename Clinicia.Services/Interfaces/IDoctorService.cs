@@ -14,7 +14,7 @@ namespace Clinicia.Services.Interfaces
 
         Task<DoctorDetails> GetAsync(Guid userId, Guid doctorId);
 
-        Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date);
+        Task<DoctorWorkingTime> GetAvailableWorkingTimeAsync(Guid id, DateTime date, FilterWorktime filter);
 
         Task<PagedResult<DoctorReview>> GetDoctorReviewsAsync(Guid id, int page, int pageSize);
 

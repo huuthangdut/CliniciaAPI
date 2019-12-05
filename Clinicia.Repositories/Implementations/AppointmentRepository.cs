@@ -57,14 +57,14 @@ namespace Clinicia.Repositories.Implementations
 
         public async Task<ReminderAppointment[]> GetReminderAppointments()
         {
-            return await Context.Appointments
+          return await Context.Appointments
                 .Include(x => x.Doctor)
                 .Include(x => x.Patient)
                     .ThenInclude(x => x.Devices)
                 .Where(x => 
                     x.Patient.PushNotificationEnabled &&
                     x.Status == (int)AppointmentStatus.Confirmed && 
-                    (DateTime.Now - x.AppointmentDate).Minutes == x.SendNotificationBeforeMinutes &&
+                    (x.AppointmentDate - DateTime.Now).TotalMinutes == x.SendNotificationBeforeMinutes &&
                     x.Patient.Devices.Any(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow))
                 .Select(x => new ReminderAppointment
                 {

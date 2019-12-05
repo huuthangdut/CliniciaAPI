@@ -30,7 +30,7 @@ namespace Clinicia.Services.Implementations
                     {
                         UserId = x.UserId,
                         Title = "Nhắc nhở lịch hẹn",
-                        Content = $"Bạn có lịch hẹn với bác sĩ {x.DoctorName} vào lúc {x.AppointmentDate.ToString("HH:mm")} hôm nay.",
+                        Content = $"Bạn có lịch hẹn với bác sĩ {x.DoctorName} vào lúc {x.AppointmentDate.ToString("HH:mm dd/MM/yyyy")}.",
                         Image = x.DoctorImage,
                         NotificationDate = DateTime.Now,
                         HasRead = false,

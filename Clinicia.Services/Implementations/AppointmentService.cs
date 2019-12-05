@@ -44,5 +44,14 @@ namespace Clinicia.Services.Implementations
         {
             return await _unitOfWork.AppointmentRepository.GetAppointmentAsync(id);
         }
+
+        public async Task UpdateStatus(Guid id, AppointmentStatus status)
+        {
+            var appointment = _unitOfWork.AppointmentRepository.Get(id);
+            appointment.Status = (int)status;
+
+            await _unitOfWork.CompleteAsync();
+            
+        }
     }
 }

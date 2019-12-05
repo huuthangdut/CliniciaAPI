@@ -6,5 +6,9 @@ namespace Clinicia.WebApi.Models
     {
         [Required]
         public string Date { get; set; }
+
+        public string TimeFrom { get; set; }
+
+        public int ServiceDuration { get; set; }
     }
 }

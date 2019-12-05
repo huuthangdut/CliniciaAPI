@@ -55,7 +55,7 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpGet("{id}/workingTime")]
         public async Task<IActionResult> GetWorkingTime([FromRoute] string id, [FromQuery] WorkingTimeParams workingTimeParams)
         {
-            var result = await _doctorService.GetAvailableWorkingTimeAsync(id.ParseGuid(), workingTimeParams.Date.ParseDate("yyyyMMdd"));
+            var result = await _doctorService.GetAvailableWorkingTimeAsync(id.ParseGuid(), workingTimeParams.Date.ParseDate("yyyyMMdd"), _mapper.Map<FilterWorktime>(workingTimeParams));
 
             return Success(_mapper.Map<DoctorWorkingTimeResult>(result));
         }

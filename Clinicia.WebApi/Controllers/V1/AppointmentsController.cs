@@ -53,5 +53,13 @@ namespace Clinicia.WebApi.Controllers.V1
 
             return Success(result);
         }
+
+        [HttpPost("{id}/cancel")] 
+        public async Task<IActionResult> Cancel([FromRoute] string id)
+        {
+            await _appointmentService.UpdateStatus(id.ParseGuid(), AppointmentStatus.Cancelled);
+
+            return Success();
+        }
     }
 }

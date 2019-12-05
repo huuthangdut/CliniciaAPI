@@ -1,10 +1,12 @@
-﻿namespace Clinicia.WebApi.Results
+﻿using System;
+
+namespace Clinicia.WebApi.Results
 {
     public class AppointmentResult
     {
         public string Id { get; set; }
 
-        public long AppointmentDate { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
         public int TotalMinutes { get; set; }
 
@@ -40,5 +42,7 @@
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

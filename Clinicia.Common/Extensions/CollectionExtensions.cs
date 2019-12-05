@@ -54,5 +54,10 @@ namespace Clinicia.Common.Extensions
 
             return false;
         }
+
+        public static bool IsSubsetOf<T>(this IEnumerable<T> collection1, IEnumerable<T> collection2)
+        {
+            return !collection1.Except(collection2).Any();
+        }
     }
 }

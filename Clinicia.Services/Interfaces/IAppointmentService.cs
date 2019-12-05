@@ -14,5 +14,7 @@ namespace Clinicia.Services.Interfaces
         Task<Appointment> AddAppointmentAsync(Guid userId, CreatedAppointment appointment);
 
         Task<Appointment> GetAppointmentAsync(Guid id);
+
+        Task UpdateStatus(Guid id, AppointmentStatus status);
     }
 }

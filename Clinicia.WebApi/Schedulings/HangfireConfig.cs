@@ -62,7 +62,7 @@ namespace Clinicia.WebApi.Schedulings
                 }
             }
 
-            RecurringJob.AddOrUpdate<ISchedulingService>(x => x.NotifyUpcomingAppointment(), Cron.Minutely);
+           RecurringJob.AddOrUpdate<ISchedulingService>(x => x.NotifyUpcomingAppointment(), Cron.Minutely);
         }
     }
 }

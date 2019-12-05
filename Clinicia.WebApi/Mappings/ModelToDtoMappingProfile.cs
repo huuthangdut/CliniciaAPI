@@ -42,6 +42,9 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<CreatedReviewModel, CreatedReview>();
 
             CreateMap<UserLocationModel, UserLocation>();
+
+            CreateMap<WorkingTimeParams, FilterWorktime>()
+               .ForMember(x => x.TimeFrom, opts => opts.MapFrom(x => x.TimeFrom.ParseNullTimespan(30)));
         }
     }
 }
