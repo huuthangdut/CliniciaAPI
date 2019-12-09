@@ -14,5 +14,7 @@ namespace Clinicia.WebApi.Models
 
         [Required]
         public Guid DoctorId { get; set; }
+
+        public Guid AppointmentId { get; set; }
     }
 }

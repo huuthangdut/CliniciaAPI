@@ -34,7 +34,8 @@ namespace Clinicia.Services.Implementations
                         Image = x.DoctorImage,
                         NotificationDate = DateTime.Now,
                         HasRead = false,
-                        Devices = x.Devices
+                        Devices = x.Devices,
+                        AppointmentId = x.AppointmentId
                     });
 
                     await _unitOfWork.NotificationRepository
@@ -56,7 +57,8 @@ namespace Clinicia.Services.Implementations
                                 {
                                     Id = notification.Id.ToString(),
                                     Image = notification.Image,
-                                    NotificationDate = notification.NotificationDate.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                                    NotificationDate = notification.NotificationDate.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                                    AppointmentId = notification.AppointmentId.ToString()
                                 }
                             });
                         }

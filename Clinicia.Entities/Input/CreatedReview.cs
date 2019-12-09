@@ -9,5 +9,7 @@ namespace Clinicia.Dtos.Input
         public string Comment { get; set; }
 
         public Guid DoctorId { get; set; }
+
+        public Guid AppointmentId { get; set; }
     }
 }

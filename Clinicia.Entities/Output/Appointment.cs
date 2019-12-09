@@ -20,6 +20,8 @@ namespace Clinicia.Dtos.Output
 
         public int SendNotificationBeforeMinutes { get; set; }
 
+        public bool HasReview { get; set; }
+
         public AppointmentDoctor Doctor { get; set; }
 
         public DoctorCheckingService CheckingService { get; set; }

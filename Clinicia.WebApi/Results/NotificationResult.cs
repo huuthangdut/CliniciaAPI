@@ -15,5 +15,7 @@ namespace Clinicia.WebApi.Results
         public bool HasRead { get; set; }
 
         public long NotificationDate { get; set; }
+
+        public string AppointmentId { get; set; }
     }
 }

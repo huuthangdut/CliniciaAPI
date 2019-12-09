@@ -58,7 +58,10 @@ namespace Clinicia.Repositories.Implementations
                 throw new EntityNotFoundException(typeof(Appointment), id);
             }
 
-            return _mapper.Map<Appointment>(appointment);
+            var result = _mapper.Map<Appointment>(appointment);
+            result.HasReview = Context.Reviews.Any(x => x.AppointmentId == appointment.Id && x.DoctorId == appointment.DoctorId && x.IsActive);
+
+            return result;
         }
 
         public async Task<ReminderAppointment[]> GetReminderAppointments()
@@ -78,6 +81,7 @@ namespace Clinicia.Repositories.Implementations
                     UserId = x.PatientId,
                     DoctorName = $"{x.Doctor.FirstName} {x.Doctor.LastName}",
                     DoctorImage = x.Doctor.ImageProfile,
+                    AppointmentId = x.Id,
                     AppointmentDate = x.AppointmentDate,
                     Devices = x.Patient.Devices
                         .Where(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow)
@@ -104,12 +108,12 @@ namespace Clinicia.Repositories.Implementations
                .OrderBy(x => x.AppointmentDate)
                .FirstOrDefaultAsync();
 
-            var distanceFromPatient = LocationHelper.GetDistance(appointment.Patient.Location.Latitude, appointment.Patient.Location.Longitude, appointment.Doctor.Location.Latitude, appointment.Doctor.Location.Longitude) / 1000;
-
             if (appointment == null)
             {
-                throw new EntityNotFoundException();
+                return null;
             }
+
+            var distanceFromPatient = LocationHelper.GetDistance(appointment.Patient.Location.Latitude, appointment.Patient.Location.Longitude, appointment.Doctor.Location.Latitude, appointment.Doctor.Location.Longitude) / 1000;
 
             var result = _mapper.Map<Appointment>(appointment);
             result.Doctor.DistanceFromPatient = distanceFromPatient;

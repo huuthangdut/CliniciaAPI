@@ -10,6 +10,8 @@ namespace Clinicia.Dtos.Output
 
         public string DoctorImage { get; set; }
 
+        public Guid AppointmentId { get; set; }
+
         public DateTime AppointmentDate { get; set; }
 
         public Device[] Devices { get; set; }

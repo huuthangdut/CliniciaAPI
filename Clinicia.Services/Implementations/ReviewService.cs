@@ -24,7 +24,8 @@ namespace Clinicia.Services.Implementations
                 Comment = model.Comment,
                 ReviewDate = DateTime.UtcNow,
                 PatientId = userId,
-                DoctorId = model.DoctorId
+                DoctorId = model.DoctorId,
+                AppointmentId = model.AppointmentId
             });
 
             await _unitOfWork.CompleteAsync();

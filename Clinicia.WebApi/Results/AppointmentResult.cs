@@ -22,6 +22,8 @@ namespace Clinicia.WebApi.Results
 
         public int SendNotificationBeforeMinutes { get; set; }
 
+        public bool HasReview { get; set; }
+
         public AppointmentDoctorResult Doctor { get; set; }
 
         public DoctorCheckingServiceResult CheckingService { get; set; }

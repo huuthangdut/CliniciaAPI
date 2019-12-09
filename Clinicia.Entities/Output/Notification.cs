@@ -17,5 +17,7 @@ namespace Clinicia.Dtos.Output
         public bool HasRead { get; set; }
 
         public DateTime NotificationDate { get; set; }
+
+        public Guid? AppointmentId { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace Clinicia.Repositories.Schemas
 
         public Guid PatientId { get; set; }
 
+        public Guid AppointmentId { get; set; }
+
         public DateTime ReviewDate { get; set; }
 
         public DateTime? CreatedDate { get; set; }
