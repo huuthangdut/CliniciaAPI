@@ -45,6 +45,9 @@ namespace Clinicia.WebApi.Mappings
 
             CreateMap<WorkingTimeParams, FilterWorktime>()
                .ForMember(x => x.TimeFrom, opts => opts.MapFrom(x => x.TimeFrom.ParseNullTimespan(30)));
+
+            CreateMap<CreatedCheckingServiceModel, CreatedCheckingService>();
+            CreateMap<UpdatedCheckingServiceModel, UpdatedCheckingService>();
         }
     }
 }

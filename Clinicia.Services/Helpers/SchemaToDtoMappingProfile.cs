@@ -41,7 +41,8 @@ namespace Clinicia.Services.Helpers
                 .ForMember(x => x.Address,
                     opts => opts.MapFrom(x => x.Location.FormattedAddress))
                 .ForMember(x => x.Longitude, opts => opts.MapFrom(x => x.Location.Longitude))
-                .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude));
+                .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude))
+                .ForMember(x => x.Specialty, opts => opts.MapFrom(x => x.Specialty.Name));
 
             CreateMap<DbCheckingService, DoctorCheckingService>()
                 .ForMember(x => x.Price, opts => opts.MapFrom(x => x.Price.RoundTo(2)));
@@ -49,6 +50,14 @@ namespace Clinicia.Services.Helpers
             CreateMap<DbNotification, Notification>();
 
             CreateMap<DbUser, UserLoginInfo>();
+
+            CreateMap<DbAppointment, DoctorAppointment>();
+            CreateMap<DbPatient, AppointmentPatient>()
+                .ForMember(x => x.Name, opts => opts.MapFrom(x => $"{x.FirstName} {x.LastName}"))
+                .ForMember(x => x.Address,
+                    opts => opts.MapFrom(x => x.Location.FormattedAddress))
+                .ForMember(x => x.Longitude, opts => opts.MapFrom(x => x.Location.Longitude))
+                .ForMember(x => x.Latitude, opts => opts.MapFrom(x => x.Location.Latitude));
         }
     }
 }

@@ -26,6 +26,10 @@ namespace Clinicia.Repositories.UnitOfWork
 
         private readonly INotificationRepository _notificationRepository;
 
+        private readonly IDoctorAppointmentRepository _doctorAppointmentRepository;
+
+        private readonly ICheckingServiceRepository _checkingServiceRepository;
+
         private readonly IMapper _mapper;
 
         public CliniciaDbContext Context { get; }
@@ -47,6 +51,10 @@ namespace Clinicia.Repositories.UnitOfWork
         public IDeviceRepository DeviceRepository => _deviceRepository ?? new DeviceRepository(Context);
 
         public INotificationRepository NotificationRepository => _notificationRepository ?? new NotificationRepository(Context, _mapper);
+
+        public IDoctorAppointmentRepository DoctorAppointmentRepository => _doctorAppointmentRepository ?? new DoctorAppointmentRepository(Context, _mapper);
+
+        public ICheckingServiceRepository CheckingServiceRepository => _checkingServiceRepository ?? new CheckingServiceRepository(Context, _mapper);
 
         public UnitOfWork(CliniciaDbContext context, IMapper mapper)
         {

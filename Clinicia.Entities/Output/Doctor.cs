@@ -25,5 +25,7 @@ namespace Clinicia.Dtos.Output
         public Location Location { get; set; }
 
         public DictionaryItem Specialty { get; set; }
+
+        public bool IsFavorited { get; set; }
     }
 }

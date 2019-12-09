@@ -43,17 +43,32 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<UserFavorite, UserFavoriteResult>();
             CreateMap<PagedResult<UserFavorite>, PagedResult<UserFavoriteResult>>();
 
-            CreateMap<AppointmentDoctor, AppointmentDoctorResult>();
+            CreateMap<AppointmentDoctor, AppointmentDoctorResult>()
+                 .ForMember(
+                    x => x.DistanceFromPatient,
+                    opts => opts.MapFrom(x => x.DistanceFromPatient.RoundTo(2))
+                    );
             CreateMap<Appointment, AppointmentResult>()
                 .ForMember(
                     x => x.Price,
                     opts => opts.MapFrom(x => x.TotalPrice.RoundTo(2))
                     );
+           
             CreateMap<PagedResult<Appointment>, PagedResult<AppointmentResult>>();
             CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();
 
             CreateMap<PagedResult<Notification>, PagedResult<NotificationResult>>();
             CreateMap<Notification, NotificationResult>();
+
+            CreateMap<DoctorAppointment, DoctorAppointmentResult>()
+                 .ForMember(
+                    x => x.Price,
+                    opts => opts.MapFrom(x => x.TotalPrice.RoundTo(2))
+                    );
+            CreateMap<PagedResult<DoctorAppointment>, PagedResult<DoctorAppointmentResult>>();
+            CreateMap<AppointmentPatient, AppointmentPatientResult>();
+
+            CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();
         }
     }
 }

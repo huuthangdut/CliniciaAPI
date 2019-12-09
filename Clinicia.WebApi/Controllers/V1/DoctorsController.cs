@@ -78,6 +78,5 @@ namespace Clinicia.WebApi.Controllers.V1
 
             return Success(_mapper.Map<PagedResult<DoctorReviewResult>>(result));
         }
-
     }
 }

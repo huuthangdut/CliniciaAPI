@@ -18,11 +18,13 @@ namespace Clinicia.WebApi.Controllers.V1
     public class AppointmentsController : BaseApiController
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IDoctorAppointmentService _doctorAppointmentService;
         private readonly IMapper _mapper;
 
-        public AppointmentsController(IAppointmentService appointmentService, IMapper mapper)
+        public AppointmentsController(IAppointmentService appointmentService, IDoctorAppointmentService doctorAppointmentService, IMapper mapper)
         {
             _appointmentService = appointmentService;
+            _doctorAppointmentService = doctorAppointmentService;
             _mapper = mapper;
         }
 
@@ -36,6 +38,42 @@ namespace Clinicia.WebApi.Controllers.V1
             var result = await _appointmentService.GetAppointmentsAsync(UserId, page, pageSize, status);
 
             return Success(_mapper.Map<PagedResult<AppointmentResult>>(result));
+        }
+
+        [HttpGet("upcoming")]
+        public async Task<IActionResult> GetUpcoming()
+        {
+            var result = await _appointmentService.GetUpcomingAppointment(UserId);
+
+            return Success(_mapper.Map<AppointmentResult>(result));
+        }
+
+        [HttpGet("ofdoctor")]
+        public async Task<IActionResult> GetOfDoctor(
+           [FromQuery] int page,
+           [FromQuery] int pageSize,
+           [FromQuery] AppointmentStatus[] status
+           )
+        {
+            var result = await _doctorAppointmentService.GetDoctorAppointmentsAsync(UserId, page, pageSize, status);
+
+            return Success(_mapper.Map<PagedResult<DoctorAppointmentResult>>(result));
+        }
+
+        [HttpGet("ofdoctor/{id}")]
+        public async Task<IActionResult> GetOfDoctor([FromRoute] string id)
+        {
+            var result = await _doctorAppointmentService.GetDoctorAppointmentAsync(id.ParseGuid());
+
+            return Success(_mapper.Map<DoctorAppointmentResult>(result));
+        }
+
+        [HttpPost("ofdoctor/{id}/status")]
+        public async Task<IActionResult> Status([FromRoute] string id, [FromBody] StatusModel<int> model)
+        {
+            await _appointmentService.UpdateStatus(id.ParseGuid(), (AppointmentStatus)model.Status);
+
+            return Success();
         }
 
         [HttpGet("{id}")]

@@ -9,6 +9,8 @@ namespace Clinicia.Services.Interfaces
 {
     public interface IAppointmentService
     {
+        Task<Appointment> GetUpcomingAppointment(Guid userId);
+
         Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize, AppointmentStatus[] status);
 
         Task<Appointment> AddAppointmentAsync(Guid userId, CreatedAppointment appointment);

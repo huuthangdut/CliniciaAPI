@@ -53,5 +53,10 @@ namespace Clinicia.Services.Implementations
             await _unitOfWork.CompleteAsync();
             
         }
+
+        public async Task<Appointment> GetUpcomingAppointment(Guid userId)
+        {
+            return await _unitOfWork.AppointmentRepository.GetUpcomingAppointment(userId);
+        }
     }
 }

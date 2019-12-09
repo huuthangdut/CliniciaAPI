@@ -9,6 +9,8 @@ namespace Clinicia.Repositories.Interfaces
 {
     public interface IAppointmentRepository : IGenericRepository<DbAppointment>
     {
+        Task<Appointment> GetUpcomingAppointment(Guid userId);
+
         Task<PagedResult<Appointment>> GetAppointmentsAsync(Guid userId, int page, int pageSize, AppointmentStatus[] status);
 
         Task<Appointment> GetAppointmentAsync(Guid id);

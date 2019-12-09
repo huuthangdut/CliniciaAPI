@@ -25,6 +25,10 @@ namespace Clinicia.Repositories.UnitOfWork
 
         INotificationRepository NotificationRepository { get; }
 
+        IDoctorAppointmentRepository DoctorAppointmentRepository { get; }
+
+        ICheckingServiceRepository CheckingServiceRepository { get; }
+
         int Complete();
 
         Task<int> CompleteAsync();

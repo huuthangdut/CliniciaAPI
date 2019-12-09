@@ -28,7 +28,7 @@ namespace Clinicia.WebApi.Controllers.V1
         }
 
         [HttpPost("{deviceUuid}/status")]
-        public ActionResult Status([FromRoute] string deviceUuid, [FromBody] StatusModel model)
+        public ActionResult Status([FromRoute] string deviceUuid, [FromBody] StatusModel<bool> model)
         {
             _deviceService.UpdateStatus(UserId, deviceUuid, model.Status);
 

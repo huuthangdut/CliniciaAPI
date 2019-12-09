@@ -36,5 +36,7 @@ namespace Clinicia.WebApi.Results
         public Location Location { get; set; }
 
         public DictionaryItem Specialty { get; set; }
+
+        public bool IsFavorited { get; set; }
     }
 }

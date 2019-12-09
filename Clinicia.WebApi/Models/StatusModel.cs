@@ -2,9 +2,9 @@
 
 namespace Clinicia.WebApi.Models
 {
-    public class StatusModel
+    public class StatusModel<T>
     {
         [Required]
-        public bool Status { get; set; }
+        public T Status { get; set; }
     }
 }

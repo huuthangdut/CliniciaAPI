@@ -38,5 +38,7 @@ namespace Clinicia.Repositories.Projections
         public decimal? DistanceFromPatient { get; set; }
 
         public bool? AvailableToday { get; set; }
+
+        public bool IsFavorited { get; set; }
     }
 }

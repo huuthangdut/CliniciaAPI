@@ -2,6 +2,7 @@
 using Clinicia.Common.Enums;
 using Clinicia.Common.Exceptions;
 using Clinicia.Common.Extensions;
+using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Helpers.Linq;
@@ -29,10 +30,12 @@ namespace Clinicia.Repositories.Implementations
             return await Context.Appointments
                 .Include(x => x.CheckingService)
                 .Include(x => x.Doctor)
-                .ThenInclude(d => d.Location)
+                    .ThenInclude(x => x.Specialty)
+                .Include(x => x.Doctor)
+                    .ThenInclude(d => d.Location)
                 .Where(x => x.PatientId == userId && x.IsActive)
                 .WhereIf(status.Length > 0, x => status.Select(s => (int)s).Contains(x.Status))
-                .OrderByElseDescending(status.Length > 0 && (status.Contains(AppointmentStatus.Confirming) || status.Contains(AppointmentStatus.Confirming)), x => x.AppointmentDate)
+                .OrderByElseDescending(status.Length > 0 && (status.Contains(AppointmentStatus.Confirming) || status.Contains(AppointmentStatus.Confirmed)), x => x.AppointmentDate)
                 .GetPagedResultAsync(
                     page,
                     pageSize,
@@ -43,8 +46,11 @@ namespace Clinicia.Repositories.Implementations
         public async Task<Appointment> GetAppointmentAsync(Guid id)
         {
             var appointment = await Context.Appointments
+                .Include(x => x.CheckingService)
+               .Include(x => x.Doctor)
+                    .ThenInclude(x => x.Specialty)
                 .Include(x => x.Doctor)
-                .ThenInclude(d => d.Location)
+                    .ThenInclude(d => d.Location)
                 .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);
 
             if (appointment == null)
@@ -58,6 +64,7 @@ namespace Clinicia.Repositories.Implementations
         public async Task<ReminderAppointment[]> GetReminderAppointments()
         {
           return await Context.Appointments
+                .Include(x => x.CheckingService)
                 .Include(x => x.Doctor)
                 .Include(x => x.Patient)
                     .ThenInclude(x => x.Devices)
@@ -81,6 +88,33 @@ namespace Clinicia.Repositories.Implementations
                             DeviceToken = device.DeviceToken
                         })
                 }).ToArrayAsync();
+        }
+
+        public async Task<Appointment> GetUpcomingAppointment(Guid userId)
+        {
+            var appointment = await Context.Appointments
+                .Include(x => x.CheckingService)
+               .Include(x => x.Doctor)
+                    .ThenInclude(x => x.Specialty)
+                .Include(x => x.Doctor)
+                    .ThenInclude(d => d.Location)
+                .Include(x => x.Patient)
+                    .ThenInclude(x => x.Location)
+               .Where(x => x.PatientId == userId && x.IsActive && x.Status == (int)AppointmentStatus.Confirmed)
+               .OrderBy(x => x.AppointmentDate)
+               .FirstOrDefaultAsync();
+
+            var distanceFromPatient = LocationHelper.GetDistance(appointment.Patient.Location.Latitude, appointment.Patient.Location.Longitude, appointment.Doctor.Location.Latitude, appointment.Doctor.Location.Longitude) / 1000;
+
+            if (appointment == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            var result = _mapper.Map<Appointment>(appointment);
+            result.Doctor.DistanceFromPatient = distanceFromPatient;
+
+            return result;
         }
     }
 }

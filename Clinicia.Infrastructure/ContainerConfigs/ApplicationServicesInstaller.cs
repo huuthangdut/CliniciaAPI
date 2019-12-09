@@ -34,6 +34,8 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<ISmsService, TwilioService>();
             services.AddTransient<ISchedulingService, SchedulingService>();
+            services.AddTransient<IDoctorAppointmentService, DoctorAppointmentService>();
+            services.AddTransient<ICheckingService, CheckingService>();
         }
     }
 }

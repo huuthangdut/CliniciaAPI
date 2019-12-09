@@ -2,7 +2,7 @@
 
 namespace Clinicia.Dtos.Output
 {
-    public class Appointment
+    public class DoctorAppointment
     {
         public Guid Id { get; set; }
 
@@ -12,20 +12,16 @@ namespace Clinicia.Dtos.Output
 
         public decimal TotalPrice { get; set; }
 
-        public string PublicResult { get; set; }
-
         public int Type { get; set; }
 
         public int Status { get; set; }
 
-        public int SendNotificationBeforeMinutes { get; set; }
-
-        public AppointmentDoctor Doctor { get; set; }
+        public AppointmentPatient Patient { get; set; }
 
         public DoctorCheckingService CheckingService { get; set; }
     }
 
-    public class AppointmentDoctor
+    public class AppointmentPatient
     {
         public Guid Id { get; set; }
 
@@ -35,16 +31,10 @@ namespace Clinicia.Dtos.Output
 
         public string Address { get; set; }
 
-        public string Clinic { get; set; }
-
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
 
         public string PhoneNumber { get; set; }
-
-        public string Specialty { get; set; }
-
-        public decimal DistanceFromPatient { get; set; }
     }
 }

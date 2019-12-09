@@ -42,10 +42,10 @@ namespace Clinicia.WebApi.Controllers.V1
             return Success();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] FavoriteModel model)
+        [HttpDelete("{doctorId}")]
+        public async Task<IActionResult> Delete([FromRoute] string doctorId)
         {
-            await _favoriteService.RemoveFromFavorite(UserId, model.DoctorId.ParseGuid());
+            await _favoriteService.RemoveFromFavorite(UserId, doctorId.ParseGuid());
 
             return Success();
         }

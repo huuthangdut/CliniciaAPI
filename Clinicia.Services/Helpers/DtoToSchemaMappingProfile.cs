@@ -9,6 +9,8 @@ namespace Clinicia.Services.Helpers
         public DtoToSchemaMappingProfile()
         {
             CreateMap<CreatedAppointment, DbAppointment>();
+            CreateMap<CreatedCheckingService, DbCheckingService>();
+            CreateMap<UpdatedCheckingService, DbCheckingService>();
         }
     }
 }

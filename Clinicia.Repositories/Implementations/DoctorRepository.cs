@@ -31,34 +31,10 @@ namespace Clinicia.Repositories.Implementations
 
         public async Task<PagedResult<Doctor>> GetDoctorsAsync(Guid userId, int page, int pageSize, FilterDoctor filter, SortOptions<SortDoctorField> sortOptions)
         {
-            //for (int i = 0; i < 50; i++)
-            //{
-            //    Context.Doctors.Add(new DbDoctor
-            //    {
-            //        FirstName = RandomHelper.GetRandomString(5),
-            //        LastName = RandomHelper.GetRandomString(5),
-            //        UserName = RandomHelper.GetRandomString(10),
-            //        Email = RandomHelper.GetRandomString(10) + "@gmail.com",
-            //        EmailConfirmed = true,
-            //        PhoneNumber = RandomHelper.GetRandomString(10),
-            //        PhoneNumberConfirmed = true,
-            //        Gender = new Random().Next(1) % 1 == 0,
-            //        BirthDate = DateTime.UtcNow,
-            //        Price = 250000,
-            //        Clinic = RandomHelper.GetRandomString(10),
-            //        MedicalSchool = RandomHelper.GetRandomString(20),
-            //        Awards = RandomHelper.GetRandomString(20),
-            //        YearExperience = RandomHelper.GetRandom(1, 20),
-            //        SpecialtyId = RandomHelper.GetRandomOf(new Guid?[] { "27183883-f4c1-486f-9892-a619008ecd69".ParseGuid(), "5ca93936-161e-4f75-9e04-e55c8adba997".ParseGuid(), "8dfb4b83-5401-4eeb-8667-b9b80fc45c27".ParseGuid() }),
-            //        IsActive = true,
-            //        IsDelete = false
-            //    });
-            //    Context.SaveChanges();
-            //}
             var user = await Context.Patients.Include(x => x.Location).FirstOrDefaultAsync(x => x.Id == userId) ?? throw new EntityNotFoundException();
             
             var query = Context.Doctors
-                .IncludeMultiple(x => x.Specialty, x => x.Location, x => x.Reviews)
+                .IncludeMultiple(x => x.Specialty, x => x.Location, x => x.Reviews, x => x.Favorites)
                 .IncludeMultipleIf(
                     filter.AvailableToday.GetValueOrDefault(), 
                     x => x.Appointments, x => x.WorkingSchedules, x => x.NoAttendances)
@@ -66,8 +42,6 @@ namespace Clinicia.Repositories.Implementations
                 .SearchByFields(filter.SearchTerm, x => x.FirstName, x => x.LastName, x => x.Clinic)
                 .WhereIf(filter.SpecialtyId.HasValue, x => x.SpecialtyId == filter.SpecialtyId)
                 .WhereIf(filter.Gender.HasValue, x => x.Gender == filter.Gender)
-                //.WhereIf(filter.PriceFrom.HasValue, x => x.Price >= filter.PriceFrom)
-                //.WhereIf(filter.PriceTo.HasValue, x => x.Price <= filter.PriceTo)
                 .WhereIf(filter.YearExperience.HasValue, GetCompareYearExperiencePredicate(filter.FilterYearExperienceSymbol, filter.YearExperience))
                 .Select(x => new DoctorProjection
                 {
@@ -81,12 +55,12 @@ namespace Clinicia.Repositories.Implementations
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
                     About = x.About,
-//                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
                     Rating = x.Reviews.Any() ? (((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive))) : 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
-                    DistanceFromPatient = LocationHelper.GetDistance(user.Location.Latitude, user.Location.Longitude, x.Location.Latitude, x.Location.Longitude) / 1000
+                    DistanceFromPatient = LocationHelper.GetDistance(user.Location.Latitude, user.Location.Longitude, x.Location.Latitude, x.Location.Longitude) / 1000,
+                    IsFavorited =  x.Favorites.Any(f => f.PatientId == userId && f.IsActive)
                 });
 
             if(filter.AvailableToday.HasValue)
@@ -117,7 +91,7 @@ namespace Clinicia.Repositories.Implementations
             var user = await Context.Patients.Include(x => x.Location).FirstOrDefaultAsync(x => x.Id == userId) ?? throw new EntityNotFoundException();
 
             var doctor = await Context.Doctors
-                .IncludeMultiple(x => x.Specialty, x => x.Reviews, x => x.Location, x => x.Appointments)
+                .IncludeMultiple(x => x.Specialty, x => x.Reviews, x => x.Location, x => x.Appointments, x => x.Favorites)
                 .Where(x => x.Id == doctorId && x.IsActive)
                 .Select(x => new DoctorDetailsProjection
                 {
@@ -131,13 +105,13 @@ namespace Clinicia.Repositories.Implementations
                     MedicalSchool = x.MedicalSchool,
                     Clinic = x.Clinic,
                     About = x.About,
-//                    Price = x.Price,
                     Location = x.Location,
                     Specialty = x.Specialty,
                     Rating = ((decimal?)x.Reviews.Where(r => r.IsActive).Sum(r => r.Rating) / x.Reviews.Count(r => r.IsActive)) ?? 0,
                     RatingCount = x.Reviews.Count(r => r.IsActive),
                     DistanceFromPatient = LocationHelper.GetDistance(user.Location.Latitude, user.Location.Longitude, x.Location.Latitude, x.Location.Longitude) / 1000,
-                    NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count() // Distinct here
+                    NumberOfPatients = x.Appointments.Where(a => a.IsActive && a.Status == (int)AppointmentStatus.Completed).Select(a => a.PatientId).Count(), // Distinct here,
+                    IsFavorited = x.Favorites.Any(f => f.PatientId == userId && f.IsActive)
                 })
                 .FirstOrDefaultAsync();
 
