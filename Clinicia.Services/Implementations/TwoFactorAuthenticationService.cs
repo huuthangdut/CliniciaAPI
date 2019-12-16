@@ -42,12 +42,12 @@ namespace Clinicia.Services.Implementations
             var user = await _userManager.FindByNameAsync(phoneNumber);
             if(user == null || !user.IsActive)
             {
-                throw new BusinessException(ErrorCodes.Failed.ToString(), "User not found");
+                throw new BusinessException(ErrorCodes.Failed.ToString(), "Không tìm thấy người dùng.");
             }
 
             var twoFactorAuthOtp = await GenerateTwoFactorAuthenticationOtp(user);
 
-            await _smsService.SendAsync($"Your verification code is: {twoFactorAuthOtp.Code}", user.UserName);
+            await _smsService.SendAsync($"Mã xác thực của bạn là: {twoFactorAuthOtp.Code}", user.UserName);
 
             return twoFactorAuthOtp.Token;
         }
@@ -57,7 +57,7 @@ namespace Clinicia.Services.Implementations
             var user = await _unitOfWork.PatientRepository.GetFirstOrDefaultAsync(x => x.OtpCode == otpCode && x.OtpToken == token && x.OtpExpiredAt > DateTime.UtcNow, x => x.Location);
             if(user == null)
             {
-                throw new BusinessException(ErrorCodes.Failed.ToString(), "Cannot verify account.");
+                throw new BusinessException(ErrorCodes.Failed.ToString(), "Mã xác thực không hợp lệ.");
             }
 
             user.OtpToken = null;
@@ -71,9 +71,9 @@ namespace Clinicia.Services.Implementations
 
             var userInfo = _mapper.Map<Dtos.Output.UserLoginInfo>(user);
             userInfo.Roles = roles.Join(",");
-            userInfo.Latitude = user.Location.Latitude;
-            userInfo.Longitude = user.Location.Longitude;
-            userInfo.Address = user.Location.FormattedAddress;
+            userInfo.Latitude = user.Location?.Latitude ?? 0;
+            userInfo.Longitude = user.Location?.Longitude ?? 0;
+            userInfo.Address = user.Location?.FormattedAddress ?? "";
 
             return userInfo;
         }

@@ -9,5 +9,7 @@ namespace Clinicia.WebApi.Models
 
         [Required]
         public string Password { get; set; }
+
+        public bool IsUserLogin { get; set; } = true;
     }
 }

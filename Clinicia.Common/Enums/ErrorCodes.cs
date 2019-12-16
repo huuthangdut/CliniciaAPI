@@ -10,6 +10,7 @@
         UserLoginIsNotActive,
         UserLockedOut,
         IdentityError,
-        RequireConfirmedPhoneNumber
+        RequireConfirmedPhoneNumber,
+        Unauthorized
     }
 }

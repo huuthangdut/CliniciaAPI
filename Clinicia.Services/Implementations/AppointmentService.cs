@@ -40,6 +40,35 @@ namespace Clinicia.Services.Implementations
 
             await _unitOfWork.CompleteAsync();
 
+            var appointmentDb = await _unitOfWork.AppointmentRepository.GetFirstOrDefaultAsync(x => x.Id == addedAppointment.Id, x => x.Patient) ?? throw new EntityNotFoundException(typeof(DbAppointment), addedAppointment.Id);
+
+            var notification = new DbNotification
+            {
+                UserId = addedAppointment.DoctorId,
+                Title = "Có lịch hẹn mới",
+                Content = $"Bạn có lịch hẹn mới với {appointmentDb.Patient.FirstName} {appointmentDb.Patient.LastName} vào lúc {addedAppointment.AppointmentDate.ToString("HH:mm dd/MM/yyyy")}. Xem chi tiết.",
+                NotificationDate = DateTime.Now,
+                HasRead = false,
+                Image = appointment.Patient.ImageProfile,
+                AppointmentId = appointment.Id
+            };
+            await _unitOfWork.NotificationRepository.AddAsync(notification).ContinueWith(x => _unitOfWork.Complete());
+            await _pushNotificationService.SendToAllDeviceUsers(appointment.DoctorId, new FcmPayloadNotification
+            {
+                Notification = new FcmNotification
+                {
+                    Title = notification.Title,
+                    Body = notification.Content
+                },
+                Data = new FcmDataNotification
+                {
+                    Id = notification.Id.ToString(),
+                    Image = notification.Image,
+                    NotificationDate = notification.NotificationDate.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                    AppointmentId = appointment.Id.ToString()
+                }
+            });
+
             return await GetAppointmentAsync(addedAppointment.Id);
         }
 
@@ -50,7 +79,7 @@ namespace Clinicia.Services.Implementations
 
         public async Task UpdateStatus(Guid id, AppointmentStatus status)
         {
-            var appointment = await _unitOfWork.AppointmentRepository.GetFirstOrDefaultAsync(x => x.Id == id, x => x.Doctor) ?? throw new EntityNotFoundException(typeof(DbAppointment), id);
+            var appointment = await _unitOfWork.AppointmentRepository.GetFirstOrDefaultAsync(x => x.Id == id, x => x.Patient) ?? throw new EntityNotFoundException(typeof(DbAppointment), id);
             appointment.Status = (int)status;
 
             string title = "";
@@ -60,15 +89,7 @@ namespace Clinicia.Services.Implementations
             {
                 case AppointmentStatus.Cancelled:
                     title = "Huỷ lịch hẹn";
-                    message = $"Bác sĩ {appointment.Doctor.FirstName} {appointment.Doctor.LastName} đã huỷ lịch hẹn ngày {appointment.AppointmentDate.ToString("yyyy/MM/dd HH:mm")}. Chúng tôi rất tiếc vì sự cố này.";
-                    break;
-                case AppointmentStatus.Completed:
-                    title = "Hoàn thành lịch hẹn";
-                    message = $"Bạn đã hoàn thành lịch hẹn ngày {appointment.AppointmentDate.ToString("yyyy/MM/dd HH:mm")} với bác sĩ {appointment.Doctor.FirstName} {appointment.Doctor.LastName}. Vui lòng đánh giá bác sĩ tại đây.";
-                    break;
-                case AppointmentStatus.Confirmed:
-                    title = "Xác nhận lịch hẹn";
-                    message = $"Bác sĩ {appointment.Doctor.FirstName} {appointment.Doctor.LastName} đã xác nhận lịch hẹn ngày {appointment.AppointmentDate.ToString("yyyy/MM/dd HH:mm")} của bạn.";
+                    message = $"{appointment.Patient.FirstName} {appointment.Patient.LastName} đã huỷ lịch hẹn ngày {appointment.AppointmentDate.ToString("yyyy/MM/dd HH:mm")}.";
                     break;
                 default:
                     await _unitOfWork.CompleteAsync();
@@ -77,16 +98,16 @@ namespace Clinicia.Services.Implementations
 
             var notification = new DbNotification
             {
-                UserId = appointment.PatientId,
+                UserId = appointment.DoctorId,
                 Title = title,
                 Content = message,
                 NotificationDate = DateTime.Now,
                 HasRead = false,
-                Image = appointment.Doctor.ImageProfile,
+                Image = appointment.Patient.ImageProfile,
                 AppointmentId = appointment.Id
             };
             await _unitOfWork.NotificationRepository.AddAsync(notification).ContinueWith(x => _unitOfWork.Complete());
-            await _pushNotificationService.SendToAllDeviceUsers(appointment.PatientId, new FcmPayloadNotification
+            await _pushNotificationService.SendToAllDeviceUsers(appointment.DoctorId, new FcmPayloadNotification
             {
                 Notification = new FcmNotification
                 {

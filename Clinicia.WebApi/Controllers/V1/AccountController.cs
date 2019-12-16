@@ -42,21 +42,24 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpPost("login")]
         public async Task<IActionResult> LoginMobile([FromBody] LoginModel model)
         {
-            var loginResult = await _loginService.LoginMobileAsync(model.Username, model.Password);
+            var loginResult = await _loginService.LoginMobileAsync(model.Username, model.Password, model.IsUserLogin);
 
             switch (loginResult.Result)
             {
                 case LoginResultType.InvalidUserNameOrPassword:
-                    return BadRequest(ErrorCodes.UserLoginInvalidUserNameOrPassword, "Invalid username or password");
+                    return BadRequest(ErrorCodes.UserLoginInvalidUserNameOrPassword, "Tên đăng nhập hoặc mật khẩu không hợp lệ");
 
                 case LoginResultType.UserIsNotActive:
-                    return BadRequest(ErrorCodes.UserLoginIsNotActive, "User login is not active");
+                    return BadRequest(ErrorCodes.UserLoginIsNotActive, "Tài khoản chưa được kích hoạt");
 
                 case LoginResultType.UserLockedOut:
-                    return BadRequest(ErrorCodes.UserLockedOut, "User locked out");
+                    return BadRequest(ErrorCodes.UserLockedOut, "Tại khoản đã bị khoá.");
 
                 case LoginResultType.RequireConfirmedPhoneNumber:
-                    return BadRequest(ErrorCodes.RequireConfirmedPhoneNumber, "Phone number is not confirmed.");
+                    return BadRequest(ErrorCodes.RequireConfirmedPhoneNumber, "Số điện thoại chưa được xác thực.");
+
+                case LoginResultType.Unauthorized:
+                    return BadRequest(ErrorCodes.Unauthorized, "Tài khoản không đủ quyền để đăng nhập.");
 
                 case LoginResultType.Success:
                     var jwtToken = await _tokenService.RequestTokenAsync(loginResult.Identity, ApplicationType.Mobile);

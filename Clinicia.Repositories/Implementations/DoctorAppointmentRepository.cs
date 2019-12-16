@@ -43,6 +43,7 @@ namespace Clinicia.Repositories.Implementations
         public async Task<DoctorAppointment> GetDoctorAppointmentAsync(Guid id)
         {
             var appointment = await Context.Appointments
+                .Include(x => x.CheckingService)
                 .Include(x => x.Patient)
                 .ThenInclude(d => d.Location)
                 .FirstOrDefaultAsync(x => x.Id == id && x.IsActive);

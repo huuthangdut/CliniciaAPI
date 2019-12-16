@@ -46,7 +46,7 @@ namespace Clinicia.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<LoginResult> LoginMobileAsync(string username, string password)
+        public async Task<LoginResult> LoginMobileAsync(string username, string password, bool isUserLogin)
         {
             var user = await _userManager.FindByNameAsync(username);
 
@@ -72,7 +72,13 @@ namespace Clinicia.Services.Implementations
                 return new LoginResult(LoginResultType.InvalidUserNameOrPassword);
             }
 
-            if(!user.PhoneNumberConfirmed)
+            var isDoctorRole = await _userManager.IsInRoleAsync(user, IdentityRoles.Doctor);
+            if (!isUserLogin && !isDoctorRole)
+            {
+                return new LoginResult(LoginResultType.Unauthorized);
+            }
+
+            if (!user.PhoneNumberConfirmed)
             {
                 return new LoginResult(LoginResultType.RequireConfirmedPhoneNumber);
             }
@@ -82,9 +88,9 @@ namespace Clinicia.Services.Implementations
 
             var userInfo = _mapper.Map<Dtos.Output.UserLoginInfo>(user);
             userInfo.Roles = roles.Join(",");
-            userInfo.Latitude = dbUser.Location.Latitude;
-            userInfo.Longitude = dbUser.Location.Longitude;
-            userInfo.Address = dbUser.Location.FormattedAddress;
+            userInfo.Latitude = dbUser?.Location?.Latitude ?? 0;
+            userInfo.Longitude = dbUser?.Location?.Longitude ?? 0;
+            userInfo.Address = dbUser?.Location?.FormattedAddress ?? "";
 
             var claimIdentity = GenerateClaimsIdentity(userInfo);
 

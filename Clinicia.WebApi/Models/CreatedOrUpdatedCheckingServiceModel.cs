@@ -19,9 +19,20 @@ namespace Clinicia.WebApi.Models
         public string DoctorId { get; set; }
     }
 
-    public class UpdatedCheckingServiceModel : CreatedCheckingServiceModel
+    public class UpdatedCheckingServiceModel 
     {
         [Required]
         public string Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        [Required]
+        public int DurationInMinutes { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
     }
 }

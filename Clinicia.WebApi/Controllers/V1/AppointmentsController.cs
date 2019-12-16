@@ -71,7 +71,7 @@ namespace Clinicia.WebApi.Controllers.V1
         [HttpPost("ofdoctor/{id}/status")]
         public async Task<IActionResult> Status([FromRoute] string id, [FromBody] StatusModel<int> model)
         {
-            await _appointmentService.UpdateStatus(id.ParseGuid(), (AppointmentStatus)model.Status);
+            await _doctorAppointmentService.UpdateStatus(id.ParseGuid(), (AppointmentStatus)model.Status);
 
             return Success();
         }

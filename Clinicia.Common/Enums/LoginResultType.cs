@@ -6,6 +6,7 @@
         InvalidUserNameOrPassword,
         UserIsNotActive,
         UserLockedOut,
-        RequireConfirmedPhoneNumber
+        RequireConfirmedPhoneNumber,
+        Unauthorized
     }
 }

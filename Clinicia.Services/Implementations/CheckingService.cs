@@ -41,8 +41,12 @@ namespace Clinicia.Services.Implementations
 
         public async Task UpdateCheckingServiceAsync(UpdatedCheckingService checkingService)
         {
-            var model = _mapper.Map<DbCheckingService>(checkingService);
-            await _unitOfWork.CheckingServiceRepository.UpdateAsync(model);
+            var model = _unitOfWork.CheckingServiceRepository.Get(checkingService.Id);
+            model.Name = checkingService.Name;
+            model.Price = checkingService.Price;
+            model.DurationInMinutes = checkingService.DurationInMinutes;
+            model.Description = checkingService.Description;
+
             await _unitOfWork.CompleteAsync();
         }
 
