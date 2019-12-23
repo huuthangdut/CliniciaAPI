@@ -42,5 +42,16 @@ namespace Clinicia.Services.Implementations
         {
             return _unitOfWork.DoctorRepository.GetCheckingServices(id);
         }
+
+        public void SetSpecialty(Guid doctorId, Guid specialtyId)
+        {
+            var doctor = _unitOfWork.DoctorRepository.Get(doctorId);
+            var specialty = _unitOfWork.SpecialtyRepository.Get(specialtyId);
+            if(doctor != null && specialty != null)
+            {
+                doctor.SpecialtyId = specialty.Id;
+                _unitOfWork.Complete();
+            }
+        }
     }
 }

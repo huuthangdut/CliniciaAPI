@@ -78,5 +78,13 @@ namespace Clinicia.WebApi.Controllers.V1
 
             return Success(_mapper.Map<PagedResult<DoctorReviewResult>>(result));
         }
+
+        [HttpPost("specialty")]
+        public IActionResult SetSpecialty([FromBody] SpecialtyModel model)
+        {
+            _doctorService.SetSpecialty(UserId, model.SpecialtyId.ParseGuid());
+
+            return Success();
+        }
     }
 }

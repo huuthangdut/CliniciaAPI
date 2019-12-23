@@ -19,5 +19,7 @@ namespace Clinicia.Services.Interfaces
         Task<PagedResult<DoctorReview>> GetDoctorReviewsAsync(Guid id, int page, int pageSize);
 
         DoctorCheckingService[] GetCheckingServices(Guid id);
+
+        void SetSpecialty(Guid doctorId, Guid specialtyId);
     }
 }
