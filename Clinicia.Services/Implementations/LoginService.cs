@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clinicia.Common.Enums;
+using Clinicia.Common.Extensions;
 using Clinicia.Common.Runtime.Security;
 using Clinicia.Dtos.Output;
 using Clinicia.Repositories.Schemas;
@@ -48,6 +49,7 @@ namespace Clinicia.Services.Implementations
 
         public async Task<LoginResult> LoginMobileAsync(string username, string password, bool isUserLogin)
         {
+            username = username.ToStandardFormatPhoneNumber();
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)

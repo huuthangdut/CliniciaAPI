@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Clinicia.Common.Enums;
+using Clinicia.Common.Exceptions;
+using PhoneNumbers;
+using System;
 
 namespace Clinicia.Common.Extensions
 {
@@ -42,6 +45,30 @@ namespace Clinicia.Common.Extensions
             where TOut : struct
         {
             return value.HasValue ? innerProperty(value.Value) : null;
+        }
+
+        public static string ToStandardFormatPhoneNumber(this string number, string countryCode = "VN")
+        {
+            try
+            {
+                var util = PhoneNumberUtil.GetInstance();
+                var phoneNumber = util.Parse(number, countryCode);
+
+                bool isValidPhoneNumber = util.IsValidNumber(phoneNumber);
+                var numberType = util.GetNumberType(phoneNumber);
+                bool isMobile = numberType == PhoneNumberType.MOBILE || numberType == PhoneNumberType.FIXED_LINE_OR_MOBILE;
+
+                if (!isValidPhoneNumber || !isMobile)
+                {
+                    throw new BusinessException(ErrorCodes.Failed.ToString(), "Số điện thoại không hợp lệ.");
+                }
+
+                return util.Format(phoneNumber, PhoneNumberFormat.E164);
+            }
+            catch (NumberParseException)
+            {
+                throw new BusinessException(ErrorCodes.Failed.ToString(), "Số điện thoại không hợp lệ.");
+            }
         }
     }
 }

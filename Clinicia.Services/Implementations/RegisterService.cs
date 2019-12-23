@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Clinicia.Dtos.Input;
 using System;
 using System.Collections.Generic;
+using Clinicia.Common.Extensions;
 
 namespace Clinicia.Services.Implementations
 {
@@ -36,9 +37,9 @@ namespace Clinicia.Services.Implementations
             {
                 FirstName = accountRegister.FirstName,
                 LastName = accountRegister.LastName,
-                UserName = accountRegister.PhoneNumber,
+                UserName = accountRegister.PhoneNumber.ToStandardFormatPhoneNumber(),
                 Email = accountRegister.Email,
-                PhoneNumber = accountRegister.PhoneNumber,
+                PhoneNumber = accountRegister.PhoneNumber.ToStandardFormatPhoneNumber(),
                 PhoneNumberConfirmed = false
             };
 
@@ -62,9 +63,9 @@ namespace Clinicia.Services.Implementations
                 FirstName = accountDoctorRegister.FirstName,
                 LastName = accountDoctorRegister.LastName,
                 Clinic = accountDoctorRegister.Clinic,
-                UserName = accountDoctorRegister.PhoneNumber,
+                UserName = accountDoctorRegister.PhoneNumber.ToStandardFormatPhoneNumber(),
                 Email = accountDoctorRegister.Email,
-                PhoneNumber = accountDoctorRegister.PhoneNumber,
+                PhoneNumber = accountDoctorRegister.PhoneNumber.ToStandardFormatPhoneNumber(),
                 PhoneNumberConfirmed = false,
                 WorkingSchedules = new List<DbWorkingSchedule>
                 {
