@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Clinicia.Common.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -256,6 +257,39 @@ namespace Clinicia.Common.Extensions
                 }
 
                 return timeRangeResult.ToArray();
+            }
+            catch
+            {
+                throw new FormatException();
+            }
+        }
+
+        public static Dictionary<DayOfWeek, TimeRange[]> ToWeekWorkingTimes(this string hours)
+        {
+            try
+            {
+                var dictionary = new Dictionary<DayOfWeek, TimeRange[]>();
+                var hour = hours.Split(',');
+                for (int i = 0; i < hour.Length; i++)
+                {
+                    var timeRangeOfDay = hour[i].Split('+');
+                    var timeRangeResult = new List<TimeRange>();
+                    foreach (var timeRange in timeRangeOfDay)
+                    {
+                        var time = timeRange.Split('-');
+                        if (time.Length == 2)
+                        {
+                            var timeFrom = time[0];
+                            var timeTo = time[1];   
+                            timeRangeResult.Add(new TimeRange(timeFrom, timeTo));
+                        }
+                    }
+
+                    dictionary[i.ToString().ParseEnum<DayOfWeek>()] = timeRangeResult.ToArray();
+                }
+
+
+                return dictionary;
             }
             catch
             {

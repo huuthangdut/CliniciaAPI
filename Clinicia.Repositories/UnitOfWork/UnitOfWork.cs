@@ -30,6 +30,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         private readonly ICheckingServiceRepository _checkingServiceRepository;
 
+        private readonly IWorkingScheduleRepository _workingScheduleRepository;
+
         private readonly IMapper _mapper;
 
         public CliniciaDbContext Context { get; }
@@ -55,6 +57,8 @@ namespace Clinicia.Repositories.UnitOfWork
         public IDoctorAppointmentRepository DoctorAppointmentRepository => _doctorAppointmentRepository ?? new DoctorAppointmentRepository(Context, _mapper);
 
         public ICheckingServiceRepository CheckingServiceRepository => _checkingServiceRepository ?? new CheckingServiceRepository(Context, _mapper);
+
+        public IWorkingScheduleRepository WorkingScheduleRepository => _workingScheduleRepository ?? new WorkingScheduleRepository(Context, _mapper);
 
         public UnitOfWork(CliniciaDbContext context, IMapper mapper)
         {

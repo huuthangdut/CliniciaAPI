@@ -54,7 +54,7 @@ namespace Clinicia.Services.Implementations
 
         public async Task<Dtos.Output.UserLoginInfo> VerifyAccountAsync(string otpCode, string token)
         {
-            var user = await _unitOfWork.PatientRepository.GetFirstOrDefaultAsync(x => x.OtpCode == otpCode && x.OtpToken == token && x.OtpExpiredAt > DateTime.UtcNow, x => x.Location);
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.OtpCode == otpCode && x.OtpToken == token && x.OtpExpiredAt > DateTime.UtcNow, x => x.Location);
             if(user == null)
             {
                 throw new BusinessException(ErrorCodes.Failed.ToString(), "Mã xác thực không hợp lệ.");

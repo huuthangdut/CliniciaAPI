@@ -102,6 +102,12 @@ namespace Clinicia.Infrastructure.ContainerConfigs
               .AddEntityFrameworkStores<CliniciaDbContext>()
               .AddDefaultTokenProviders();
 
+            services.AddIdentityCore<DbDoctor>()
+             .AddRoles<DbRole>()
+             .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<DbDoctor, DbRole>>()
+             .AddEntityFrameworkStores<CliniciaDbContext>()
+             .AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.

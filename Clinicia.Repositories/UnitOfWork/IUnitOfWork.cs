@@ -29,6 +29,8 @@ namespace Clinicia.Repositories.UnitOfWork
 
         ICheckingServiceRepository CheckingServiceRepository { get; }
 
+        IWorkingScheduleRepository WorkingScheduleRepository { get; }
+
         int Complete();
 
         Task<int> CompleteAsync();

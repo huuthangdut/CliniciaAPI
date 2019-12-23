@@ -95,5 +95,13 @@ namespace Clinicia.WebApi.Controllers.V1
 
             return Success(new TokenResult { Token = veirfiedToken });
         }
+
+        [HttpPost("registerDoctor")]
+        public async Task<IActionResult> RegisterDoctor([FromBody] RegisterDoctorModel model)
+        {
+            var veirfiedToken = await _registerService.RegisterDoctorAsync(_mapper.Map<AccountDoctorRegister>(model));
+
+            return Success(new TokenResult { Token = veirfiedToken });
+        }
     }
 }

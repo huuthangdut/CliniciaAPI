@@ -36,6 +36,7 @@ namespace Clinicia.Infrastructure.ContainerConfigs
             services.AddTransient<ISchedulingService, SchedulingService>();
             services.AddTransient<IDoctorAppointmentService, DoctorAppointmentService>();
             services.AddTransient<ICheckingService, CheckingService>();
+            services.AddTransient<IWorkingScheduleService, WorkingScheduleService>();
         }
     }
 }

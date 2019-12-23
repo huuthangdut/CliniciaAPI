@@ -21,6 +21,9 @@ namespace Clinicia.WebApi.Mappings
 
             CreateMap<RegisterModel, AccountRegister>();
 
+            CreateMap<RegisterDoctorModel, AccountDoctorRegister>()
+                .IncludeBase<RegisterModel, AccountRegister>();
+
             CreateMap<FilterDoctorParams, FilterDoctor>()
                 .ForMember(
                     x => x.PriceFrom,

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clinicia.Common;
 using Clinicia.Common.Extensions;
 using Clinicia.Common.Helpers;
 using Clinicia.Dtos.Common;
@@ -69,6 +70,9 @@ namespace Clinicia.WebApi.Mappings
             CreateMap<AppointmentPatient, AppointmentPatientResult>();
 
             CreateMap<DoctorCheckingService, DoctorCheckingServiceResult>();
+
+            CreateMap<TimeRange, TimeRangeResult>();
+            CreateMap<WorkingSchedule, WorkingScheduleResult>();
         }
     }
 }
