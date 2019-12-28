@@ -66,7 +66,10 @@ namespace Clinicia.Repositories.Implementations
 
         public async Task<ReminderAppointment[]> GetReminderAppointments()
         {
-          return await Context.Appointments
+            var now = DateTime.Now;
+            var datetimenow = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+
+            return await Context.Appointments
                 .Include(x => x.CheckingService)
                 .Include(x => x.Doctor)
                 .Include(x => x.Patient)
@@ -74,8 +77,8 @@ namespace Clinicia.Repositories.Implementations
                 .Where(x => 
                     x.Patient.PushNotificationEnabled &&
                     x.Status == (int)AppointmentStatus.Confirmed && 
-                    (x.AppointmentDate - DateTime.Now).TotalMinutes == x.SendNotificationBeforeMinutes &&
-                    x.Patient.Devices.Any(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow))
+                    datetimenow.AddMinutes(x.SendNotificationBeforeMinutes) == x.AppointmentDate &&
+                    x.Patient.Devices.Any(device => device.IsActive))
                 .Select(x => new ReminderAppointment
                 {
                     UserId = x.PatientId,
@@ -84,7 +87,7 @@ namespace Clinicia.Repositories.Implementations
                     AppointmentId = x.Id,
                     AppointmentDate = x.AppointmentDate,
                     Devices = x.Patient.Devices
-                        .Where(device => device.IsActive && device.ExpiredAt > DateTime.UtcNow)
+                        .Where(device => device.IsActive)
                         .ConvertArray(device => new Device
                         {
                             Id = device.Id,
